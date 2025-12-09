@@ -1,0 +1,251 @@
+<!--pages/navigation/navigation.wxml-->
+<view class="navigation-page">
+  <!-- 顶部导航栏 -->
+  <view class="page-header">
+    <view class="header-content">
+      <text class="hospital-name">{{currentHospital.name}}</text>
+      <text class="hospital-level">{{currentHospital.level}}</text>
+    </view>
+    <view class="hospital-address">
+      <text>📍 {{currentHospital.address}}</text>
+    </view>
+  </view>
+
+  <!-- 模式切换 -->
+  <view class="mode-tabs">
+    <view 
+      class="mode-tab {{navigationMode === 'floor' ? 'active' : ''}}" 
+      bindtap="switchMode"
+      data-mode="floor"
+    >
+      <text class="tab-icon">🏢</text>
+      <text>楼层导航</text>
+    </view>
+    <view 
+      class="mode-tab {{navigationMode === 'indoor' ? 'active' : ''}}" 
+      bindtap="switchMode"
+      data-mode="indoor"
+    >
+      <text class="tab-icon">🗺️</text>
+      <text>室内导航</text>
+    </view>
+    <view 
+      class="mode-tab {{navigationMode === 'out' ? 'active' : ''}}" 
+      bindtap="switchMode"
+      data-mode="out"
+    >
+      <text class="tab-icon">📍</text>
+      <text>院外导航</text>
+    </view>
+  </view>
+
+  <!-- 搜索框 -->
+  <view class="search-section">
+    <view class="search-container">
+      <view class="search-icon">🔍</view>
+      <input 
+        class="search-input" 
+        placeholder="搜索科室、诊室或服务点..."
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        focus="{{showSearch}}"
+      />
+      <view class="search-cancel" wx:if="{{searchKeyword}}" bindtap="resetNavigation">
+        <text>取消</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索结果显示 -->
+  <view class="search-results" wx:if="{{showSearch && searchResults.length > 0}}">
+    <view class="results-header">
+      <text>搜索结果 ({{searchResults.length}})</text>
+    </view>
+    <block wx:for="{{searchResults}}" wx:key="id">
+      <view 
+        class="result-item" 
+        bindtap="selectSearchResult"
+        data-result="{{item}}"
+      >
+        <text class="result-icon">{{item.icon}}</text>
+        <view class="result-info">
+          <text class="result-name">{{item.name}}</text>
+          <text class="result-details">{{item.floor}} · {{item.type}}</text>
+        </view>
+        <text class="result-arrow">›</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 楼层导航模式 -->
+  <view class="content-section" wx:if="{{navigationMode === 'floor'}}">
+    <!-- 实景图片 -->
+    <view class="image-gallery">
+      <text class="section-title">🏥 医院实景</text>
+      <view class="image-list">
+        <block wx:for="{{previewImages}}" wx:key="id">
+          <view class="image-item" bindtap="viewRealImage" data-image="{{item}}">
+            <view class="image-placeholder">
+              <text class="placeholder-icon">🖼️</text>
+              <text class="placeholder-text">{{item.description}}</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 楼层导航 -->
+    <view class="floors-navigation">
+      <text class="section-title">🏢 楼层导航</text>
+      <block wx:for="{{floors}}" wx:key="floor">
+        <view class="floor-section">
+          <view 
+            class="floor-header" 
+            bindtap="toggleFloor" 
+            data-floor="{{item.floor}}"
+          >
+            <view class="floor-title">
+              <text class="floor-icon">🛗</text>
+              <text>{{item.floor}}</text>
+            </view>
+            <text class="expand-icon">{{expandedFloor === item.floor ? '−' : '+'}}</text>
+          </view>
+          
+          <view class="floor-content" wx:if="{{expandedFloor === item.floor}}">
+            <block wx:for="{{item.departments}}" wx:key="id">
+              <view 
+                class="department-item" 
+                bindtap="selectDepartment"
+                data-department="{{item}}"
+                data-floor="{{item.floor}}"
+              >
+                <text class="dept-icon">{{item.icon}}</text>
+                <view class="dept-info">
+                  <text class="dept-name">{{item.name}}</text>
+                  <text class="dept-type">{{item.type}}</text>
+                </view>
+                <text class="nav-arrow">➡️</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 室内导航模式 -->
+  <view class="content-section" wx:if="{{navigationMode === 'indoor'}}">
+    <view class="indoor-map">
+      <text class="section-title">🗺️ 室内平面图</text>
+      <view class="map-container">
+        <!-- 这里可以放置实际的地图图片 -->
+        <view class="map-placeholder">
+          <text class="map-text">医院室内平面图</text>
+          <text class="map-tip">点击地图上的位置点可开始导航</text>
+        </view>
+      </view>
+      
+      <view class="map-legend">
+        <view class="legend-item">
+          <view class="legend-color entrance"></view>
+          <text>入口</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color service"></view>
+          <text>服务窗口</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color clinic"></view>
+          <text>诊室</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color pharmacy"></view>
+          <text>药房</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 院外导航模式 -->
+  <view class="content-section" wx:if="{{navigationMode === 'out'}}">
+    <view class="hospitals-list">
+      <text class="section-title">🏥 附近医院</text>
+      <block wx:for="{{hospitals}}" wx:key="id">
+        <view 
+          class="hospital-card" 
+          bindtap="selectHospital"
+          data-hospital="{{item}}"
+        >
+          <view class="hospital-header">
+            <text class="hospital-name">{{item.name}}</text>
+            <view class="hospital-tags">
+              <view class="tag level">{{item.level}}</view>
+              <view class="tag distance">📏 {{item.distance}}</view>
+            </view>
+          </view>
+          
+          <view class="hospital-info">
+            <text class="info-item">📍 {{item.address}}</text>
+            <text class="info-item">⏱️ 约{{item.time}}车程</text>
+          </view>
+          
+          <view class="hospital-departments">
+            <text class="dept-label">主要科室：</text>
+            <view class="dept-tags">
+              <block wx:for="{{item.departments}}" wx:key="*this">
+                <view class="dept-tag">
+                  <text>{{item}}</text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 导航指引面板 -->
+  <view class="navigation-panel" wx:if="{{showNavigation}}">
+    <view class="panel-header">
+      <text class="panel-title">导航指引</text>
+      <view class="close-btn" bindtap="resetNavigation">
+        <text>✕</text>
+      </view>
+    </view>
+    
+    <view class="route-info">
+      <text class="route-from">📍 当前位置：{{currentLocation}}</text>
+      <text class="route-to">🎯 目标位置：{{targetLocation}}</text>
+    </view>
+    
+    <view class="steps-list">
+      <block wx:for="{{navigationPath}}" wx:key="step">
+        <view class="step-item">
+          <text class="step-icon">{{item.icon}}</text>
+          <text class="step-number">{{item.step}}</text>
+          <text class="step-instruction">{{item.instruction}}</text>
+        </view>
+      </block>
+    </view>
+    
+    <button class="start-navigation-btn" bindtap="startNavigation">
+      <text>🚀 开始导航</text>
+    </button>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar">
+    <view class="action-btn" bindtap="callHospital">
+      <text class="btn-icon">📞</text>
+      <text>电话咨询</text>
+    </view>
+    <view class="action-btn" bindtap="viewHospitalLocation">
+      <text class="btn-icon">📍</text>
+      <text>查看位置</text>
+    </view>
+    <view class="action-btn" bindtap="resetNavigation">
+      <text class="btn-icon">🔄</text>
+      <text>重置导航</text>
+    </view>
+  </view>
+</view>

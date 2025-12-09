@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/triage/triage",
+    "pages/navigation/navigation",
+    "pages/process/process",
+    "pages/mine/mine",
+    "pages/result/result"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2a8ce5",
+    "navigationBarTitleText": "晓医智能导诊",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#2a8ce5",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/icons/home.png",
+        "selectedIconPath": "images/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/triage/triage",
+        "text": "分诊",
+        "iconPath": "images/icons/diagnosis.png",
+        "selectedIconPath": "images/icons/diagnosis-active.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/icons/profile.png",
+        "selectedIconPath": "images/icons/profile-active.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.record": {
+      "desc": "需要您的语音授权进行语音输入"
+    },
+    "scope.userLocation": {
+      "desc": "需要获取您的位置信息提供院内导航"
+    }
+  },
+  "requiredPrivateInfos": ["getLocation"],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

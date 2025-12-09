@@ -1,0 +1,90 @@
+<!--pages/index/index.wxml-->
+<view class="page-container">
+  <!-- 顶部导航栏区域 -->
+  <view class="header-section">
+    <view class="app-info">
+      <text class="app-name">{{motto}}</text>
+      <text class="app-subtitle">{{subtitle}}</text>
+    </view>
+    <image class="app-logo" src="/images/icons/logo.png" mode="aspectFit"></image>
+  </view>
+
+  <!-- 紧急提示 -->
+  <view class="emergency-notice" wx:if="{{emergencyNotice.show}}">
+    <view class="emergency-header">
+      <text class="emergency-icon">⚠️</text>
+      <text class="emergency-title">{{emergencyNotice.title}}</text>
+      <text class="close-btn" bindtap="closeEmergencyNotice">×</text>
+    </view>
+    <text class="emergency-content">{{emergencyNotice.content}}</text>
+  </view>
+
+  <!-- 快速开始区域 -->
+  <view class="quick-start-section">
+    <view class="section-header">
+      <text class="section-title">快速开始</text>
+      <text class="section-desc">选择常见症状快速分诊</text>
+    </view>
+    <view class="symptom-tags">
+      <block wx:for="{{quickSymptoms}}" wx:key="*this">
+        <view 
+          class="symptom-tag" 
+          bindtap="quickStart"
+          data-symptom="{{item}}"
+        >
+          <text>{{item}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 功能模块区域 -->
+  <view class="features-section">
+    <view class="section-header">
+      <text class="section-title">核心功能</text>
+      <text class="section-desc">多种方式满足不同需求</text>
+    </view>
+    <view class="features-grid">
+      <block wx:for="{{features}}" wx:key="id">
+        <view 
+          class="feature-card" 
+          bindtap="featureTap"
+          data-id="{{item.id}}"
+          style="background-color: {{item.bgColor}};"
+        >
+          <view class="feature-icon" style="color: {{item.color}};">
+            {{item.icon}}
+          </view>
+          <text class="feature-title">{{item.title}}</text>
+          <text class="feature-desc">{{item.desc}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 主要操作按钮 -->
+  <view class="action-section">
+    <button class="primary-btn" bindtap="startTriage">
+      <text class="btn-icon">🏥</text>
+      <text class="btn-text">开始智能分诊</text>
+    </button>
+    
+    <view class="secondary-actions">
+      <view class="secondary-btn" bindtap="viewHistory" wx:if="{{hasHistory}}">
+        <text class="btn-icon">📖</text>
+        <text class="btn-text">查看历史记录</text>
+      </view>
+      
+      <view class="secondary-btn" bindtap="featureTap" data-id="3">
+        <text class="btn-icon">📍</text>
+        <text class="btn-text">医院科室导航</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer-section">
+    <text class="footer-text">晓医 - 您的智能就医助手</text>
+    <text class="footer-subtext">基于医学知识图谱 · 数据安全加密</text>
+  </view>
+</view>

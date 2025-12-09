@@ -1,0 +1,9 @@
+<!--pages/result/result.wxml-->
+<view>
+  <text>测试页面</text>
+  <text>路由参数1: {{__route__}}</text>
+  <text>路由参数2: {{route_}}</text>
+  <text>症状: {{symptoms.join(',')}}</text>
+  <text>年龄: {{age}}</text>
+  <text>性别: {{gender}}</text>
+</view>

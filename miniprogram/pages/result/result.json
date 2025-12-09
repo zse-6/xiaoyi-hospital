@@ -1,0 +1,6 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "分诊结果",
+  "enablePullDownRefresh": false,
+  "backgroundColor": "#f8fbff"
+}

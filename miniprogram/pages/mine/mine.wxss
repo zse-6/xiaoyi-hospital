@@ -1,0 +1,612 @@
+/* pages/mine/mine.wxss */
+.mine-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  padding-bottom: 40rpx;
+}
+
+/* 用户信息区域 */
+.user-info-section {
+  background: linear-gradient(135deg, #2a8ce5 0%, #1a6cc0 100%);
+  color: white;
+  padding: 60rpx 30rpx 40rpx;
+  display: flex;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  margin-right: 30rpx;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-icon {
+  font-size: 60rpx;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-name {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.user-id {
+  display: block;
+  font-size: 24rpx;
+  opacity: 0.8;
+}
+
+.user-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15rpx;
+}
+
+.action-icon {
+  font-size: 36rpx;
+  margin-bottom: 8rpx;
+}
+
+.action-btn text:last-child {
+  font-size: 20rpx;
+  opacity: 0.9;
+}
+
+/* 功能列表 */
+.functions-section {
+  background: white;
+  margin: 0 30rpx 30rpx;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.08);
+  transform: translateY(-20rpx);
+}
+
+.functions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30rpx;
+}
+
+.function-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.function-item:active {
+  transform: scale(0.95);
+}
+
+.function-item.selected .function-icon {
+  transform: scale(1.1);
+}
+
+.function-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  color: white;
+  margin-bottom: 15rpx;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.function-badge {
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  background: #ff3b30;
+  color: white;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  font-weight: bold;
+}
+
+.function-name {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 卡片样式 */
+.section-card {
+  background: white;
+  margin: 0 30rpx 30rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  background: #f8fbff;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.section-icon {
+  font-size: 36rpx;
+}
+
+.record-count {
+  color: #666;
+  font-size: 24rpx;
+  margin-left: 10rpx;
+}
+
+.section-actions {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.expand-icon {
+  font-size: 40rpx;
+  color: #999;
+  width: 50rpx;
+  height: 50rpx;
+  text-align: center;
+  line-height: 50rpx;
+}
+
+.edit-btn, .save-btn {
+  background: #e8f4ff;
+  color: #2a8ce5;
+  border-radius: 12rpx;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.save-btn {
+  background: #34c759;
+  color: white;
+}
+
+.section-content {
+  padding: 30rpx;
+}
+
+/* 统计数据 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30rpx;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 25rpx;
+  background: #f8fbff;
+  border-radius: 16rpx;
+}
+
+.stat-value {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #2a8ce5;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 历史记录 */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25rpx;
+}
+
+.history-item {
+  background: #f8fbff;
+  border-radius: 16rpx;
+  padding: 25rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.3s ease;
+}
+
+.history-item:active {
+  border-color: #2a8ce5;
+  background: #f0f8ff;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.history-date {
+  font-size: 26rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.history-status {
+  padding: 6rpx 15rpx;
+  border-radius: 12rpx;
+  font-size: 22rpx;
+}
+
+.history-status.completed {
+  background: #e8f8f0;
+  color: #34c759;
+}
+
+.history-status.pending {
+  background: #fff4e6;
+  color: #ff9500;
+}
+
+.history-symptoms {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 20rpx;
+  line-height: 1.4;
+}
+
+.history-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+}
+
+.detail-label {
+  font-size: 24rpx;
+  color: #666;
+  min-width: 120rpx;
+}
+
+.detail-value {
+  font-size: 24rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.history-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 30rpx;
+}
+
+.view-all-btn, .clear-btn {
+  flex: 1;
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 12rpx;
+  padding: 20rpx 0;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+.clear-btn {
+  background: #ffe6e6;
+  color: #ff3333;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 60rpx 30rpx;
+}
+
+.empty-icon {
+  display: block;
+  font-size: 80rpx;
+  color: #ccc;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  display: block;
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+}
+
+.empty-tip {
+  display: block;
+  font-size: 24rpx;
+  color: #ccc;
+}
+
+/* 健康档案 */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-input {
+  background: #f8fbff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.allergy-list, .disease-list, .medication-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.allergy-tag, .disease-tag, .medication-tag {
+  background: #e8f4ff;
+  border-radius: 8rpx;
+  padding: 15rpx 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.allergy-tag {
+  background: #ffe6e6;
+  color: #ff3333;
+}
+
+.disease-tag {
+  background: #fff4e6;
+  color: #ff9500;
+}
+
+.medication-tag {
+  background: #e8f8f0;
+  color: #34c759;
+}
+
+.remove-btn {
+  width: 30rpx;
+  height: 30rpx;
+  background: #ff6b6b;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  font-weight: bold;
+}
+
+.add-btn {
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 8rpx;
+  padding: 15rpx 20rpx;
+  font-size: 24rpx;
+  display: inline-block;
+}
+
+.export-btn {
+  background: linear-gradient(135deg, #2a8ce5 0%, #1a6cc0 100%);
+  color: white;
+  border-radius: 12rpx;
+  padding: 25rpx 0;
+  font-size: 28rpx;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15rpx;
+  margin-top: 20rpx;
+}
+
+/* 收藏医院 */
+.favorites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25rpx;
+}
+
+.hospital-card {
+  background: #f8fbff;
+  border-radius: 16rpx;
+  padding: 25rpx;
+  border: 2rpx solid #e8f4ff;
+}
+
+.hospital-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20rpx;
+}
+
+.hospital-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.hospital-actions {
+  display: flex;
+  align-items: center;
+}
+
+.hospital-action {
+  width: 50rpx;
+  height: 50rpx;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  color: #ff9500;
+}
+
+.hospital-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.info-item {
+  font-size: 24rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.hospital-buttons {
+  display: flex;
+  gap: 20rpx;
+}
+
+.hospital-buttons .action-btn {
+  flex: 1;
+  background: white;
+  color: #2a8ce5;
+  border-radius: 12rpx;
+  padding: 20rpx 0;
+  font-size: 24rpx;
+  text-align: center;
+  border: 2rpx solid #e8f4ff;
+}
+
+.hospital-buttons .action-btn.primary {
+  background: #2a8ce5;
+  color: white;
+  border: none;
+}
+
+.empty-favorites {
+  text-align: center;
+  padding: 60rpx 30rpx;
+}
+
+/* 设置 */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25rpx;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25rpx;
+  background: #f8fbff;
+  border-radius: 16rpx;
+}
+
+.setting-name {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.setting-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  margin: 30rpx 0;
+}
+
+.setting-actions .action-btn {
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 12rpx;
+  padding: 25rpx 0;
+  font-size: 26rpx;
+  text-align: center;
+}
+
+.setting-actions .action-btn.logout {
+  background: #ffe6e6;
+  color: #ff3333;
+}
+
+.app-info {
+  background: #f8fbff;
+  border-radius: 16rpx;
+  padding: 25rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.info-item {
+  font-size: 24rpx;
+  color: #666;
+  display: flex;
+  justify-content: space-between;
+}

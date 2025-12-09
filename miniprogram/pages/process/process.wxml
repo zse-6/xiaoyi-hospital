@@ -1,0 +1,272 @@
+<!--pages/process/process.wxml-->
+<view class="process-page">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="header-content">
+      <text class="page-title">就诊流程管理</text>
+      <text class="current-time">当前时间 {{currentTime}}</text>
+    </view>
+    <text class="page-subtitle">一站式就诊全流程陪伴</text>
+  </view>
+
+  <!-- 当前流程卡片 -->
+  <view class="current-process-card">
+    <view class="process-header">
+      <view class="process-info">
+        <text class="process-title">{{currentProcess.title}}</text>
+        <text class="process-time">预计耗时 {{currentProcess.estimatedTime}}</text>
+      </view>
+      <view class="process-status">
+        <text class="status-badge {{isInProcess ? 'active' : 'completed'}}">
+          {{isInProcess ? '进行中' : '已完成'}}
+        </text>
+      </view>
+    </view>
+    
+    <text class="process-description">{{currentProcess.description}}</text>
+    
+    <view class="process-departments">
+      <text class="dept-label">涉及科室：</text>
+      <view class="dept-tags">
+        <block wx:for="{{currentProcess.departments}}" wx:key="*this">
+          <view class="dept-tag">
+            <text>{{item}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+    
+    <view class="process-actions" wx:if="{{isInProcess}}">
+      <view class="appointment-time">
+        <text class="time-label">预约时间：</text>
+        <text class="time-value">{{appointmentTime}}</text>
+      </view>
+      <view class="action-buttons">
+        <button class="action-btn" bindtap="setAppointmentTime">⏰ 修改时间</button>
+        <button class="action-btn primary" bindtap="shareProcess">📤 分享流程</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 流程步骤 -->
+  <view class="process-steps-section">
+    <view class="section-header">
+      <text class="section-title">就诊步骤</text>
+      <text class="section-subtitle">点击步骤查看详情</text>
+    </view>
+    
+    <view class="timeline">
+      <block wx:for="{{processSteps}}" wx:key="id">
+        <view class="timeline-item">
+          <!-- 时间线连接线 -->
+          <view class="timeline-connector" wx:if="{{index > 0}}"></view>
+          
+          <!-- 步骤节点 -->
+          <view 
+            class="step-node {{item.status}}" 
+            bindtap="viewStepDetail"
+            data-id="{{item.id}}"
+            style="background-color: {{item.color}}"
+          >
+            <text class="step-icon">{{item.icon}}</text>
+          </view>
+          
+          <!-- 步骤内容 -->
+          <view 
+            class="step-content" 
+            bindtap="viewStepDetail"
+            data-id="{{item.id}}"
+          >
+            <view class="step-header">
+              <text class="step-title">{{item.title}}</text>
+              <view class="step-status">
+                <text class="status-text {{item.status}}">
+                  {{item.status === 'completed' ? '已完成' : item.status === 'current' ? '进行中' : '待开始'}}
+                </text>
+              </view>
+            </view>
+            
+            <text class="step-time">{{item.time}}</text>
+            
+            <view class="step-action" wx:if="{{item.status === 'current' && isInProcess}}">
+              <button 
+                class="complete-btn" 
+                bindtap="toggleStepStatus"
+                data-id="{{item.id}}"
+                catchtap
+              >
+                ✅ 标记完成
+              </button>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 待办事项 -->
+  <view class="todos-section">
+    <view class="section-header">
+      <text class="section-title">待办事项</text>
+      <view class="add-todo-btn" bindtap="addTodo">
+        <text>+ 添加</text>
+      </view>
+    </view>
+    
+    <view class="todos-list">
+      <block wx:for="{{todos}}" wx:key="id">
+        <view 
+          class="todo-item {{item.completed ? 'completed' : ''}}" 
+          bindtap="toggleTodo"
+          data-id="{{item.id}}"
+        >
+          <view class="todo-checkbox">
+            <text class="checkbox-icon">{{item.completed ? '✓' : ''}}</text>
+          </view>
+          <text class="todo-text">{{item.title}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 提醒设置 -->
+  <view class="reminders-section">
+    <view class="section-header">
+      <text class="section-title">智能提醒</text>
+      <text class="section-subtitle">不错过任何关键节点</text>
+    </view>
+    
+    <view class="reminders-list">
+      <block wx:for="{{reminders}}" wx:key="id">
+        <view class="reminder-item">
+          <view class="reminder-info">
+            <text class="reminder-name">{{item.name}}</text>
+            <text class="reminder-status">{{item.enabled ? '已开启' : '已关闭'}}</text>
+          </view>
+          <switch 
+            checked="{{item.enabled}}" 
+            bindchange="toggleReminder"
+            data-id="{{item.id}}"
+            color="#2a8ce5"
+          />
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 其他流程选项 -->
+  <view class="other-processes-section">
+    <view class="section-header">
+      <text class="section-title">其他就诊流程</text>
+      <text class="section-subtitle">根据情况选择不同流程</text>
+    </view>
+    
+    <view class="process-cards">
+      <block wx:for="{{otherProcesses}}" wx:key="id">
+        <view 
+          class="process-card" 
+          bindtap="selectProcess"
+          data-id="{{item.id}}"
+        >
+          <view class="process-card-header">
+            <text class="card-title">{{item.title}}</text>
+            <view class="card-tag {{item.urgent ? 'urgent' : item.inpatient ? 'inpatient' : 'checkup'}}">
+              {{item.urgent ? '紧急' : item.inpatient ? '住院' : '体检'}}
+            </view>
+          </view>
+          
+          <text class="card-time">⏱️ {{item.estimatedTime}}</text>
+          <text class="card-desc">{{item.description}}</text>
+          
+          <view class="card-departments">
+            <block wx:for="{{item.departments}}" wx:key="*this">
+              <text class="card-dept">{{item}}</text>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 底部操作按钮 -->
+  <view class="action-buttons-section">
+    <button 
+      class="start-btn" 
+      bindtap="startProcess"
+      wx:if="{{!isInProcess}}"
+    >
+      <text class="btn-icon">🚀</text>
+      <text class="btn-text">开始就诊流程</text>
+    </button>
+    
+    <button 
+      class="complete-btn" 
+      bindtap="completeProcess"
+      wx:if="{{isInProcess}}"
+    >
+      <text class="btn-icon">✅</text>
+      <text class="btn-text">完成就诊流程</text>
+    </button>
+    
+    <button class="stats-btn" bindtap="viewStatistics">
+      <text class="btn-icon">📊</text>
+      <text class="btn-text">查看统计</text>
+    </button>
+  </view>
+
+  <!-- 步骤详情弹窗 -->
+  <view class="step-detail-modal" wx:if="{{showStepDetail}}">
+    <view class="modal-overlay" bindtap="closeStepDetail"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">{{currentStepDetail.title}}</text>
+        <view class="modal-close" bindtap="closeStepDetail">
+          <text>×</text>
+        </view>
+      </view>
+      
+      <view class="modal-body">
+        <view class="step-info">
+          <view class="step-icon-large" style="background-color: {{currentStepDetail.color}}">
+            <text>{{currentStepDetail.icon}}</text>
+          </view>
+          <text class="step-status-large">{{currentStepDetail.status === 'completed' ? '已完成' : currentStepDetail.status === 'current' ? '进行中' : '待开始'}}</text>
+          <text class="step-time-large">{{currentStepDetail.time}}</text>
+        </view>
+        
+        <view class="detail-section">
+          <text class="section-title">详细内容</text>
+          <view class="detail-list">
+            <block wx:for="{{currentStepDetail.details}}" wx:key="*this">
+              <view class="detail-item">
+                <text class="bullet">•</text>
+                <text>{{item}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+        
+        <view class="tips-section">
+          <text class="section-title">温馨提示</text>
+          <view class="tips-list">
+            <block wx:for="{{currentStepDetail.tips}}" wx:key="*this">
+              <view class="tip-item">
+                <text class="tip-icon">💡</text>
+                <text>{{item}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+        
+        <button 
+          class="modal-action-btn" 
+          bindtap="toggleStepStatus"
+          data-id="{{currentStepDetail.id}}"
+          wx:if="{{currentStepDetail.status === 'current' && isInProcess}}"
+        >
+          <text>✅ 标记为已完成</text>
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

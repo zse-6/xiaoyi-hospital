@@ -1,0 +1,257 @@
+/* pages/index/index.wxss */
+.page-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  padding: 0 30rpx 80rpx;
+}
+
+/* 顶部导航栏 */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60rpx 0 40rpx;
+}
+
+.app-info {
+  flex: 1;
+}
+
+.app-name {
+  display: block;
+  font-size: 52rpx;
+  font-weight: 700;
+  color: #2a8ce5;
+  line-height: 1.3;
+  margin-bottom: 10rpx;
+}
+
+.app-subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+.app-logo {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(42, 140, 229, 0.15);
+}
+
+/* 紧急提示 */
+.emergency-notice {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 40rpx;
+  border-left: 8rpx solid #ff9800;
+}
+
+.emergency-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.emergency-icon {
+  font-size: 36rpx;
+  margin-right: 15rpx;
+}
+
+.emergency-title {
+  flex: 1;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #e65100;
+}
+
+.close-btn {
+  font-size: 40rpx;
+  color: #999;
+  width: 40rpx;
+  height: 40rpx;
+  text-align: center;
+  line-height: 40rpx;
+}
+
+.emergency-content {
+  font-size: 28rpx;
+  color: #e65100;
+  line-height: 1.5;
+}
+
+/* 分区标题 */
+.section-header {
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.section-desc {
+  display: block;
+  font-size: 26rpx;
+  color: #888;
+}
+
+/* 快速开始区域 */
+.quick-start-section {
+  margin-bottom: 50rpx;
+}
+
+.symptom-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.symptom-tag {
+  background: white;
+  border-radius: 50rpx;
+  padding: 20rpx 35rpx;
+  font-size: 28rpx;
+  color: #2a8ce5;
+  border: 2rpx solid #e8f4ff;
+  transition: all 0.3s ease;
+}
+
+.symptom-tag:active {
+  background: #2a8ce5;
+  color: white;
+  transform: scale(0.95);
+}
+
+/* 功能模块区域 */
+.features-section {
+  margin-bottom: 60rpx;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24rpx;
+}
+
+.feature-card {
+  border-radius: 24rpx;
+  padding: 40rpx 30rpx;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 6rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.feature-card:active {
+  transform: translateY(-4rpx);
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.12);
+}
+
+.feature-icon {
+  font-size: 72rpx;
+  display: block;
+  margin-bottom: 20rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+}
+
+.feature-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.feature-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* 操作按钮区域 */
+.action-section {
+  margin-bottom: 50rpx;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #2a8ce5 0%, #1a6cc0 100%);
+  border-radius: 50rpx;
+  padding: 32rpx 0;
+  margin-bottom: 30rpx;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12rpx 30rpx rgba(42, 140, 229, 0.25);
+  transition: all 0.3s ease;
+}
+
+.primary-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 6rpx 20rpx rgba(42, 140, 229, 0.2);
+}
+
+.btn-icon {
+  font-size: 36rpx;
+  margin-right: 15rpx;
+}
+
+.btn-text {
+  font-size: 34rpx;
+  font-weight: 500;
+  color: white;
+}
+
+.secondary-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.secondary-btn {
+  flex: 1;
+  background: white;
+  border-radius: 24rpx;
+  padding: 30rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx solid #e8f4ff;
+  transition: all 0.3s ease;
+}
+
+.secondary-btn:active {
+  background: #f8fbff;
+  transform: scale(0.98);
+}
+
+.secondary-btn .btn-text {
+  color: #2a8ce5;
+  font-size: 28rpx;
+}
+
+/* 底部信息 */
+.footer-section {
+  text-align: center;
+  padding-top: 40rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.footer-text {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.footer-subtext {
+  display: block;
+  font-size: 22rpx;
+  color: #999;
+}

@@ -1,0 +1,638 @@
+/* pages/navigation/navigation.wxss */
+.navigation-page {
+  min-height: 100vh;
+  background: #f8fbff;
+  padding-bottom: 120rpx;
+}
+
+/* 顶部导航栏 */
+.page-header {
+  background: linear-gradient(135deg, #2a8ce5 0%, #1a6cc0 100%);
+  color: white;
+  padding: 60rpx 30rpx 30rpx;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.hospital-name {
+  font-size: 38rpx;
+  font-weight: bold;
+  flex: 1;
+}
+
+.hospital-level {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12rpx;
+  padding: 8rpx 20rpx;
+  font-size: 22rpx;
+}
+
+.hospital-address {
+  font-size: 26rpx;
+  opacity: 0.9;
+}
+
+/* 模式切换 */
+.mode-tabs {
+  display: flex;
+  background: white;
+  margin: 0 30rpx;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+  transform: translateY(-20rpx);
+}
+
+.mode-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  border-radius: 16rpx;
+  transition: all 0.3s ease;
+}
+
+.mode-tab.active {
+  background: #e8f4ff;
+}
+
+.tab-icon {
+  font-size: 48rpx;
+  margin-bottom: 10rpx;
+}
+
+.mode-tab text:last-child {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.mode-tab.active text:last-child {
+  color: #2a8ce5;
+  font-weight: 500;
+}
+
+/* 搜索框 */
+.search-section {
+  padding: 0 30rpx 20rpx;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 50rpx;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.search-icon {
+  font-size: 32rpx;
+  color: #999;
+  margin-right: 20rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+}
+
+.search-cancel {
+  color: #2a8ce5;
+  font-size: 28rpx;
+  padding-left: 20rpx;
+  border-left: 2rpx solid #f0f0f0;
+}
+
+/* 搜索结果 */
+.search-results {
+  background: white;
+  margin: 0 30rpx 20rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+  max-height: 500rpx;
+  overflow-y: auto;
+}
+
+.results-header {
+  padding: 25rpx 30rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  padding: 25rpx 30rpx;
+  border-bottom: 2rpx solid #f8f8f8;
+  transition: all 0.3s ease;
+}
+
+.result-item:active {
+  background: #f8fbff;
+}
+
+.result-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+  width: 60rpx;
+  text-align: center;
+}
+
+.result-info {
+  flex: 1;
+}
+
+.result-name {
+  display: block;
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.result-details {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.result-arrow {
+  font-size: 40rpx;
+  color: #ccc;
+  margin-left: 20rpx;
+}
+
+/* 内容区域 */
+.content-section {
+  padding: 0 30rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 25rpx;
+}
+
+/* 图片画廊 */
+.image-gallery {
+  margin-bottom: 40rpx;
+}
+
+.image-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+.image-item {
+  background: white;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.image-item:active {
+  transform: scale(0.98);
+}
+
+.image-placeholder {
+  height: 200rpx;
+  background: #f0f8ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30rpx;
+}
+
+.placeholder-icon {
+  font-size: 60rpx;
+  color: #2a8ce5;
+  margin-bottom: 15rpx;
+}
+
+.placeholder-text {
+  font-size: 24rpx;
+  color: #666;
+  text-align: center;
+}
+
+/* 楼层导航 */
+.floors-navigation {
+  margin-bottom: 40rpx;
+}
+
+.floor-section {
+  background: white;
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.floor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  background: #f8fbff;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.floor-title {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.floor-icon {
+  font-size: 36rpx;
+}
+
+.expand-icon {
+  font-size: 40rpx;
+  color: #999;
+  width: 50rpx;
+  height: 50rpx;
+  text-align: center;
+  line-height: 50rpx;
+}
+
+.floor-content {
+  padding: 20rpx 0;
+}
+
+.department-item {
+  display: flex;
+  align-items: center;
+  padding: 25rpx 30rpx;
+  border-bottom: 2rpx solid #f8f8f8;
+  transition: all 0.3s ease;
+}
+
+.department-item:active {
+  background: #f8fbff;
+}
+
+.department-item:last-child {
+  border-bottom: none;
+}
+
+.dept-icon {
+  font-size: 44rpx;
+  margin-right: 20rpx;
+  width: 60rpx;
+  text-align: center;
+}
+
+.dept-info {
+  flex: 1;
+}
+
+.dept-name {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.dept-type {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.nav-arrow {
+  font-size: 36rpx;
+  color: #ccc;
+  margin-left: 20rpx;
+}
+
+/* 室内地图 */
+.indoor-map {
+  margin-bottom: 40rpx;
+}
+
+.map-container {
+  background: white;
+  border-radius: 20rpx;
+  height: 500rpx;
+  margin-bottom: 25rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-placeholder {
+  text-align: center;
+}
+
+.map-text {
+  display: block;
+  font-size: 32rpx;
+  color: #2a8ce5;
+  margin-bottom: 15rpx;
+}
+
+.map-tip {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.map-legend {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  background: white;
+  border-radius: 16rpx;
+  padding: 25rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.legend-color {
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 4rpx;
+}
+
+.legend-color.entrance {
+  background: #34c759;
+}
+
+.legend-color.service {
+  background: #2a8ce5;
+}
+
+.legend-color.clinic {
+  background: #ff9500;
+}
+
+.legend-color.pharmacy {
+  background: #af52de;
+}
+
+/* 医院卡片 */
+.hospital-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 25rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.hospital-card:active {
+  transform: scale(0.99);
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.12);
+}
+
+.hospital-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20rpx;
+}
+
+.hospital-name {
+  flex: 1;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-right: 20rpx;
+}
+
+.hospital-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.tag {
+  padding: 6rpx 12rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tag.level {
+  background: #e8f4ff;
+  color: #2a8ce5;
+}
+
+.tag.distance {
+  background: #f0f8ff;
+  color: #666;
+}
+
+.hospital-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.info-item {
+  font-size: 26rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.hospital-departments {
+  margin-bottom: 15rpx;
+}
+
+.dept-label {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 15rpx;
+}
+
+.dept-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.dept-tag {
+  background: #f0f0f0;
+  border-radius: 8rpx;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 导航指引面板 */
+.navigation-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 30rpx 30rpx 0 0;
+  padding: 30rpx;
+  box-shadow: 0 -4rpx 30rpx rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.panel-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-btn {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  color: #999;
+}
+
+.route-info {
+  margin-bottom: 30rpx;
+}
+
+.route-from, .route-to {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.route-to {
+  color: #2a8ce5;
+  font-weight: 500;
+}
+
+.steps-list {
+  margin-bottom: 30rpx;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 2rpx solid #f8f8f8;
+}
+
+.step-item:last-child {
+  border-bottom: none;
+}
+
+.step-icon {
+  font-size: 36rpx;
+  margin-right: 20rpx;
+  width: 60rpx;
+}
+
+.step-number {
+  width: 50rpx;
+  height: 50rpx;
+  background: #2a8ce5;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  margin-right: 20rpx;
+}
+
+.step-instruction {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.start-navigation-btn {
+  background: linear-gradient(135deg, #2a8ce5 0%, #1a6cc0 100%);
+  border-radius: 50rpx;
+  padding: 28rpx 0;
+  color: white;
+  font-size: 32rpx;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15rpx;
+  margin-top: 20rpx;
+}
+
+/* 底部操作栏 */
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  display: flex;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15rpx;
+  border-radius: 16rpx;
+  transition: all 0.3s ease;
+}
+
+.action-btn:active {
+  background: #f8fbff;
+  transform: scale(0.95);
+}
+
+.btn-icon {
+  font-size: 44rpx;
+  margin-bottom: 10rpx;
+}
+
+.action-btn text:last-child {
+  font-size: 22rpx;
+  color: #666;
+}

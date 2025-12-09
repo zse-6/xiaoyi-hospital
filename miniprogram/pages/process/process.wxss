@@ -1,0 +1,749 @@
+/* pages/process/process.wxss */
+.process-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  padding-bottom: 180rpx;
+}
+
+/* 页面头部 */
+.page-header {
+  background: linear-gradient(135deg, #2a8ce5 0%, #1a6cc0 100%);
+  color: white;
+  padding: 60rpx 30rpx 30rpx;
+  border-radius: 0 0 40rpx 40rpx;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.page-title {
+  font-size: 40rpx;
+  font-weight: bold;
+}
+
+.current-time {
+  font-size: 26rpx;
+  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8rpx 16rpx;
+  border-radius: 12rpx;
+}
+
+.page-subtitle {
+  display: block;
+  font-size: 26rpx;
+  opacity: 0.9;
+}
+
+/* 当前流程卡片 */
+.current-process-card {
+  background: white;
+  margin: 30rpx;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 30rpx rgba(42, 140, 229, 0.15);
+  transform: translateY(-20rpx);
+}
+
+.process-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20rpx;
+}
+
+.process-info {
+  flex: 1;
+}
+
+.process-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.process-time {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.process-status {
+  margin-left: 20rpx;
+}
+
+.status-badge {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background: #e8f4ff;
+  color: #2a8ce5;
+}
+
+.status-badge.completed {
+  background: #e8f8f0;
+  color: #34c759;
+}
+
+.process-description {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 25rpx;
+  line-height: 1.4;
+}
+
+.process-departments {
+  margin-bottom: 25rpx;
+}
+
+.dept-label {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 15rpx;
+}
+
+.dept-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.dept-tag {
+  background: #f0f8ff;
+  border-radius: 8rpx;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+  color: #2a8ce5;
+}
+
+.process-actions {
+  border-top: 2rpx solid #f0f0f0;
+  padding-top: 25rpx;
+}
+
+.appointment-time {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.time-label {
+  font-size: 26rpx;
+  color: #666;
+  margin-right: 10rpx;
+}
+
+.time-value {
+  font-size: 28rpx;
+  color: #2a8ce5;
+  font-weight: 500;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  background: #f0f0f0;
+  border-radius: 12rpx;
+  padding: 20rpx 0;
+  font-size: 26rpx;
+  color: #666;
+  text-align: center;
+  border: none;
+}
+
+.action-btn.primary {
+  background: #2a8ce5;
+  color: white;
+}
+
+/* 流程步骤区域 */
+.process-steps-section {
+  margin: 0 30rpx 30rpx;
+}
+
+.section-header {
+  margin-bottom: 25rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.section-subtitle {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 时间线样式 */
+.timeline {
+  position: relative;
+  padding-left: 50rpx;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 40rpx;
+}
+
+.timeline-connector {
+  position: absolute;
+  left: 25rpx;
+  top: -40rpx;
+  width: 4rpx;
+  height: 40rpx;
+  background: #e0e0e0;
+}
+
+.step-node {
+  position: absolute;
+  left: -50rpx;
+  top: 0;
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.step-node.completed {
+  background: #34c759 !important;
+}
+
+.step-node.current {
+  box-shadow: 0 0 0 8rpx rgba(42, 140, 229, 0.2);
+}
+
+.step-node.pending {
+  opacity: 0.6;
+}
+
+.step-icon {
+  font-size: 28rpx;
+  color: white;
+}
+
+.step-content {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  margin-left: 40rpx;
+  transition: all 0.3s ease;
+}
+
+.step-content:active {
+  transform: scale(0.99);
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.12);
+}
+
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.step-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+}
+
+.step-status {
+  margin-left: 20rpx;
+}
+
+.status-text {
+  font-size: 22rpx;
+  padding: 6rpx 15rpx;
+  border-radius: 12rpx;
+}
+
+.status-text.completed {
+  background: #e8f8f0;
+  color: #34c759;
+}
+
+.status-text.current {
+  background: #e8f4ff;
+  color: #2a8ce5;
+}
+
+.status-text.pending {
+  background: #f0f0f0;
+  color: #999;
+}
+
+.step-time {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+
+.step-action {
+  margin-top: 15rpx;
+}
+
+.complete-btn {
+  background: #34c759;
+  color: white;
+  border-radius: 12rpx;
+  padding: 15rpx 25rpx;
+  font-size: 24rpx;
+  display: inline-block;
+  border: none;
+}
+
+/* 待办事项区域 */
+.todos-section {
+  background: white;
+  margin: 0 30rpx 30rpx;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.add-todo-btn {
+  background: #e8f4ff;
+  color: #2a8ce5;
+  border-radius: 12rpx;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+}
+
+.todos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  background: #f8fbff;
+  transition: all 0.3s ease;
+}
+
+.todo-item:active {
+  background: #f0f8ff;
+}
+
+.todo-item.completed {
+  opacity: 0.6;
+}
+
+.todo-checkbox {
+  width: 40rpx;
+  height: 40rpx;
+  border: 2rpx solid #ccc;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+
+.todo-item.completed .todo-checkbox {
+  background: #34c759;
+  border-color: #34c759;
+}
+
+.checkbox-icon {
+  color: white;
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: #999;
+}
+
+/* 提醒设置区域 */
+.reminders-section {
+  background: white;
+  margin: 0 30rpx 30rpx;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+}
+
+.reminders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25rpx;
+}
+
+.reminder-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  background: #f8fbff;
+}
+
+.reminder-info {
+  flex: 1;
+}
+
+.reminder-name {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.reminder-status {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 其他流程区域 */
+.other-processes-section {
+  margin: 0 30rpx 30rpx;
+}
+
+.process-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+.process-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 25rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.process-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.12);
+}
+
+.process-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15rpx;
+}
+
+.card-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+  margin-right: 15rpx;
+}
+
+.card-tag {
+  padding: 6rpx 12rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+  white-space: nowrap;
+}
+
+.card-tag.urgent {
+  background: #ffe6e6;
+  color: #ff3333;
+}
+
+.card-tag.inpatient {
+  background: #f0f8ff;
+  color: #2a8ce5;
+}
+
+.card-tag.checkup {
+  background: #f0f8f0;
+  color: #34c759;
+}
+
+.card-time {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.card-desc {
+  display: block;
+  font-size: 22rpx;
+  color: #999;
+  margin-bottom: 15rpx;
+  line-height: 1.3;
+}
+
+.card-departments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.card-dept {
+  font-size: 20rpx;
+  color: #2a8ce5;
+  background: #e8f4ff;
+  padding: 4rpx 10rpx;
+  border-radius: 6rpx;
+}
+
+/* 底部操作按钮 */
+.action-buttons-section {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 30rpx;
+  display: flex;
+  gap: 20rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.start-btn, .complete-btn, .stats-btn {
+  flex: 1;
+  border-radius: 50rpx;
+  padding: 28rpx 0;
+  font-size: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15rpx;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.start-btn:active, .complete-btn:active, .stats-btn:active {
+  transform: scale(0.98);
+}
+
+.start-btn {
+  background: linear-gradient(135deg, #2a8ce5 0%, #1a6cc0 100%);
+}
+
+.complete-btn {
+  background: linear-gradient(135deg, #34c759 0%, #2c9e4a 100%);
+}
+
+.stats-btn {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.btn-icon {
+  font-size: 36rpx;
+  color: white;
+}
+
+.stats-btn .btn-icon {
+  color: #666;
+}
+
+.btn-text {
+  font-size: 30rpx;
+  color: white;
+  font-weight: 500;
+}
+
+.stats-btn .btn-text {
+  color: #666;
+}
+
+/* 步骤详情弹窗 */
+.step-detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: relative;
+  background: white;
+  width: 100%;
+  max-height: 80vh;
+  border-radius: 40rpx 40rpx 0 0;
+  padding: 30rpx;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+
+.modal-close {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  color: #999;
+}
+
+.step-info {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.step-icon-large {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20rpx;
+}
+
+.step-icon-large text {
+  font-size: 50rpx;
+  color: white;
+}
+
+.step-status-large {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+  font-weight: 500;
+}
+
+.step-time-large {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.detail-section, .tips-section {
+  margin-bottom: 30rpx;
+}
+
+.detail-section .section-title, .tips-section .section-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.detail-list, .tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.detail-item {
+  display: flex;
+  gap: 15rpx;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+.bullet {
+  color: #2a8ce5;
+  font-weight: bold;
+}
+
+.tip-item {
+  display: flex;
+  gap: 15rpx;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.4;
+  padding: 15rpx;
+  background: #f8fbff;
+  border-radius: 12rpx;
+}
+
+.tip-icon {
+  color: #ff9500;
+  font-size: 28rpx;
+}
+
+.modal-action-btn {
+  background: #34c759;
+  color: white;
+  border-radius: 50rpx;
+  padding: 28rpx 0;
+  font-size: 30rpx;
+  font-weight: 500;
+  margin-top: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15rpx;
+}

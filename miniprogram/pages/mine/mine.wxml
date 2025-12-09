@@ -1,0 +1,381 @@
+<!--pages/mine/mine.wxml-->
+<view class="mine-page">
+  <!-- 用户信息区域 -->
+  <view class="user-info-section">
+    <view class="user-avatar" bindtap="getUserInfo">
+      <view class="avatar-placeholder" wx:if="{{!hasUserInfo}}">
+        <text class="avatar-icon">👤</text>
+      </view>
+      <image class="avatar-image" src="{{userInfo.avatarUrl}}" wx:else></image>
+    </view>
+    
+    <view class="user-details">
+      <text class="user-name">{{userInfo.nickName}}</text>
+      <text class="user-id">ID: {{userInfo.nickName ? userInfo.nickName.slice(0, 8) : '用户'}}</text>
+    </view>
+    
+    <view class="user-actions">
+      <view class="action-btn" bindtap="shareApp">
+        <text class="action-icon">📤</text>
+        <text>分享</text>
+      </view>
+      <view class="action-btn" bindtap="checkUpdate" wx:if="{{hasUserInfo}}">
+        <text class="action-icon">🔄</text>
+        <text>更新</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="functions-section">
+    <view class="functions-grid">
+      <block wx:for="{{functions}}" wx:key="id">
+        <view 
+          class="function-item {{selectedFunction === item.name ? 'selected' : ''}}" 
+          bindtap="selectFunction"
+          data-name="{{item.name}}"
+        >
+          <view class="function-icon" style="background-color: {{item.color}}">
+            <text>{{item.icon}}</text>
+            <view class="function-badge" wx:if="{{item.badge > 0}}">
+              <text>{{item.badge}}</text>
+            </view>
+          </view>
+          <text class="function-name">{{item.name}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 统计数据 -->
+  <view class="statistics-section">
+    <view 
+      class="section-card" 
+      bindtap="toggleSection" 
+      data-section="statistics"
+    >
+      <view class="section-header">
+        <view class="section-title">
+          <text class="section-icon">📊</text>
+          <text>就诊统计</text>
+        </view>
+        <text class="expand-icon">{{expandedSections.statistics ? '−' : '+'}}</text>
+      </view>
+      
+      <view class="section-content" wx:if="{{expandedSections.statistics}}">
+        <view class="stats-grid">
+          <view class="stat-item">
+            <text class="stat-value">{{statistics.totalDiagnosis}}</text>
+            <text class="stat-label">总就诊次数</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-value">{{statistics.completedProcesses}}</text>
+            <text class="stat-label">完成流程</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-value">{{statistics.avgAccuracy}}%</text>
+            <text class="stat-label">平均准确率</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-value">{{statistics.emergencyCases}}</text>
+            <text class="stat-label">紧急情况</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 历史记录 -->
+  <view class="history-section">
+    <view 
+      class="section-card" 
+      bindtap="toggleSection" 
+      data-section="history"
+    >
+      <view class="section-header">
+        <view class="section-title">
+          <text class="section-icon">📖</text>
+          <text>历史记录</text>
+          <text class="record-count">({{historyRecords.length}})</text>
+        </view>
+        <view class="section-actions">
+          <text class="expand-icon">{{expandedSections.history ? '−' : '+'}}</text>
+        </view>
+      </view>
+      
+      <view class="section-content" wx:if="{{expandedSections.history}}">
+        <view class="history-list">
+          <block wx:for="{{historyRecords}}" wx:key="id">
+            <view class="history-item" bindtap="viewHistoryDetail" data-id="{{item.id}}">
+              <view class="history-header">
+                <text class="history-date">{{item.date}}</text>
+                <view class="history-status {{item.completed ? 'completed' : 'pending'}}">
+                  <text>{{item.completed ? '已完成' : '未完成'}}</text>
+                </view>
+              </view>
+              
+              <text class="history-symptoms">{{item.symptoms}}</text>
+              
+              <view class="history-details">
+                <view class="detail-item">
+                  <text class="detail-label">推荐科室：</text>
+                  <text class="detail-value">{{item.department}}</text>
+                </view>
+                <view class="detail-item">
+                  <text class="detail-label">匹配度：</text>
+                  <text class="detail-value">{{item.accuracy}}</text>
+                </view>
+              </view>
+            </view>
+          </block>
+          
+          <view class="history-actions">
+            <button class="view-all-btn" bindtap="viewAllHistory" wx:if="{{historyRecords.length > 0}}">
+              <text>查看全部历史</text>
+            </button>
+            <button class="clear-btn" bindtap="clearHistory" wx:if="{{historyRecords.length > 0}}">
+              <text>清除历史记录</text>
+            </button>
+            <view class="empty-history" wx:else>
+              <text class="empty-icon">📝</text>
+              <text class="empty-text">暂无历史记录</text>
+              <text class="empty-tip">开始使用智能分诊功能吧</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 健康档案 -->
+  <view class="profile-section">
+    <view 
+      class="section-card" 
+      bindtap="toggleSection" 
+      data-section="profile"
+    >
+      <view class="section-header">
+        <view class="section-title">
+          <text class="section-icon">📋</text>
+          <text>健康档案</text>
+        </view>
+        <view class="section-actions">
+          <text class="expand-icon">{{expandedSections.profile ? '−' : '+'}}</text>
+          <view class="edit-btn" bindtap="editProfile" wx:if="{{!editingProfile}}">
+            <text>编辑</text>
+          </view>
+          <view class="save-btn" bindtap="saveProfile" wx:if="{{editingProfile}}">
+            <text>保存</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="section-content" wx:if="{{expandedSections.profile}}">
+        <view class="profile-form">
+          <!-- 血型 -->
+          <view class="form-item">
+            <text class="form-label">血型</text>
+            <picker 
+              class="form-input" 
+              range="{{['A型', 'B型', 'O型', 'AB型', '其他']}}"
+              value="{{['A型', 'B型', 'O型', 'AB型', '其他'].indexOf(healthProfile.bloodType)}}"
+              bindchange="updateProfileField"
+              data-field="bloodType"
+              disabled="{{!editingProfile}}"
+            >
+              <text>{{healthProfile.bloodType}}</text>
+            </picker>
+          </view>
+          
+          <!-- 过敏史 -->
+          <view class="form-item">
+            <text class="form-label">过敏史</text>
+            <view class="allergy-list">
+              <block wx:for="{{healthProfile.allergies}}" wx:key="*this">
+                <view class="allergy-tag">
+                  <text>{{item}}</text>
+                  <view 
+                    class="remove-btn" 
+                    bindtap="removeAllergy"
+                    data-index="{{index}}"
+                    wx:if="{{editingProfile}}"
+                  >
+                    <text>×</text>
+                  </view>
+                </view>
+              </block>
+              <view 
+                class="add-btn" 
+                bindtap="addAllergy"
+                wx:if="{{editingProfile}}"
+              >
+                <text>+ 添加</text>
+              </view>
+            </view>
+          </view>
+          
+          <!-- 慢性病史 -->
+          <view class="form-item">
+            <text class="form-label">慢性病史</text>
+            <view class="disease-list">
+              <block wx:for="{{healthProfile.chronicDiseases}}" wx:key="*this">
+                <view class="disease-tag">
+                  <text>{{item}}</text>
+                </view>
+              </block>
+              <view 
+                class="add-btn" 
+                bindtap="addChronicDisease"
+                wx:if="{{editingProfile}}"
+              >
+                <text>+ 添加</text>
+              </view>
+            </view>
+          </view>
+          
+          <!-- 常用药物 -->
+          <view class="form-item">
+            <text class="form-label">常用药物</text>
+            <view class="medication-list">
+              <block wx:for="{{healthProfile.medications}}" wx:key="*this">
+                <view class="medication-tag">
+                  <text>{{item}}</text>
+                </view>
+              </block>
+              <view 
+                class="add-btn" 
+                bindtap="addMedication"
+                wx:if="{{editingProfile}}"
+              >
+                <text>+ 添加</text>
+              </view>
+            </view>
+          </view>
+          
+          <!-- 导出按钮 -->
+          <button class="export-btn" bindtap="exportHealthProfile" wx:if="{{!editingProfile}}">
+            <text>📥 导出健康档案</text>
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 收藏医院 -->
+  <view class="favorites-section">
+    <view 
+      class="section-card" 
+      bindtap="toggleSection" 
+      data-section="favorites"
+    >
+      <view class="section-header">
+        <view class="section-title">
+          <text class="section-icon">🏥</text>
+          <text>收藏医院</text>
+        </view>
+        <text class="expand-icon">{{expandedSections.favorites ? '−' : '+'}}</text>
+      </view>
+      
+      <view class="section-content" wx:if="{{expandedSections.favorites}}">
+        <view class="favorites-list">
+          <block wx:for="{{favoriteHospitals}}" wx:key="id">
+            <view class="hospital-card">
+              <view class="hospital-header">
+                <text class="hospital-name">{{item.name}}</text>
+                <view class="hospital-actions">
+                  <view 
+                    class="hospital-action" 
+                    bindtap="toggleFavoriteHospital"
+                    data-id="{{item.id}}"
+                    catchtap
+                  >
+                    <text>⭐</text>
+                  </view>
+                </view>
+              </view>
+              
+              <view class="hospital-info">
+                <text class="info-item">🏷️ {{item.level}}</text>
+                <text class="info-item">📍 {{item.department}}</text>
+                <text class="info-item">📅 {{item.lastVisit}}</text>
+              </view>
+              
+              <view class="hospital-buttons">
+                <button 
+                  class="action-btn" 
+                  bindtap="viewHospitalDetail"
+                  data-id="{{item.id}}"
+                >
+                  <text>查看详情</text>
+                </button>
+                <button class="action-btn primary" bindtap="viewAllHistory">
+                  <text>导航前往</text>
+                </button>
+              </view>
+            </view>
+          </block>
+          
+          <view class="empty-favorites" wx:if="{{favoriteHospitals.length === 0}}">
+            <text class="empty-icon">🏥</text>
+            <text class="empty-text">暂无收藏医院</text>
+            <text class="empty-tip">在分诊结果页面可以收藏医院哦</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设置 -->
+  <view class="settings-section">
+    <view 
+      class="section-card" 
+      bindtap="toggleSection" 
+      data-section="settings"
+    >
+      <view class="section-header">
+        <view class="section-title">
+          <text class="section-icon">⚙️</text>
+          <text>设置</text>
+        </view>
+        <text class="expand-icon">{{expandedSections.settings ? '−' : '+'}}</text>
+      </view>
+      
+      <view class="section-content" wx:if="{{expandedSections.settings}}">
+        <view class="settings-list">
+          <block wx:for="{{settings}}" wx:key="id">
+            <view class="setting-item">
+              <text class="setting-name">{{item.name}}</text>
+              <switch 
+                checked="{{item.enabled}}" 
+                bindchange="toggleSetting"
+                data-id="{{item.id}}"
+                color="#2a8ce5"
+              />
+            </view>
+          </block>
+          
+          <view class="setting-actions">
+            <button class="action-btn" bindtap="viewPrivacyPolicy">
+              <text>隐私政策</text>
+            </button>
+            <button class="action-btn" bindtap="viewAboutUs">
+              <text>关于我们</text>
+            </button>
+            <button class="action-btn" bindtap="giveFeedback">
+              <text>反馈建议</text>
+            </button>
+            <button class="action-btn logout" bindtap="logout" wx:if="{{hasUserInfo}}">
+              <text>退出登录</text>
+            </button>
+          </view>
+          
+          <view class="app-info">
+            <text class="info-item">版本号：{{appInfo.version}}</text>
+            <text class="info-item">最后更新：{{appInfo.lastUpdate}}</text>
+            <text class="info-item">应用大小：{{appInfo.size}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

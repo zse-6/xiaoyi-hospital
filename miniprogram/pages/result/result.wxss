@@ -1,0 +1,532 @@
+/* pages/result/result.wxss */
+.result-page {
+  min-height: 100vh;
+  background: #f8fbff;
+  padding-bottom: 160rpx;
+}
+
+/* 顶部导航 */
+.page-header {
+  display: flex;
+  align-items: center;
+  padding: 60rpx 30rpx 30rpx;
+  background: linear-gradient(135deg, #2a8ce5 0%, #1a6cc0 100%);
+  color: white;
+}
+
+.back-btn {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.page-title {
+  flex: 1;
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.share-btn {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+/* 加载状态 */
+.loading-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.spinner {
+  width: 120rpx;
+  height: 120rpx;
+  border: 8rpx solid #e8f4ff;
+  border-top: 8rpx solid #2a8ce5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 40rpx;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+  display: block;
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 15rpx;
+}
+
+.loading-subtext {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 紧急情况警示 */
+.emergency-alert {
+  background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 100%);
+  margin: 30rpx;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  border-left: 8rpx solid #ff3333;
+}
+
+.emergency-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.emergency-icon {
+  font-size: 40rpx;
+  margin-right: 15rpx;
+}
+
+.emergency-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #ff3333;
+}
+
+.emergency-text {
+  font-size: 28rpx;
+  color: #e60000;
+  line-height: 1.5;
+}
+
+.highlight {
+  font-weight: bold;
+}
+
+/* 结果概览 */
+.result-overview {
+  padding: 30rpx;
+}
+
+.overview-card {
+  background: white;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  box-shadow: 0 12rpx 30rpx rgba(42, 140, 229, 0.15);
+}
+
+.department-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.department-icon {
+  font-size: 80rpx;
+  margin-right: 30rpx;
+}
+
+.department-details {
+  flex: 1;
+}
+
+.department-name {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #2a8ce5;
+  margin-bottom: 10rpx;
+}
+
+.recommendation-text {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 置信度 */
+.confidence-level {
+  margin-top: 30rpx;
+}
+
+.confidence-bar {
+  height: 20rpx;
+  background: #f0f0f0;
+  border-radius: 10rpx;
+  overflow: hidden;
+  margin-bottom: 15rpx;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #34c759 0%, #2a8ce5 100%);
+  border-radius: 10rpx;
+  transition: width 1s ease;
+}
+
+.confidence-text {
+  display: block;
+  text-align: right;
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 卡片样式 */
+.section-card {
+  background: white;
+  margin: 0 30rpx 30rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  background: #f8fbff;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+}
+
+.section-icon {
+  font-size: 36rpx;
+}
+
+.section-header text:last-child {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.expand-icon {
+  font-size: 40rpx;
+  color: #999;
+  width: 50rpx;
+  height: 50rpx;
+  text-align: center;
+  line-height: 50rpx;
+}
+
+.section-content {
+  padding: 30rpx;
+}
+
+/* 症状回顾 */
+.symptoms-review {
+  margin-bottom: 30rpx;
+}
+
+.review-title {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+
+.symptoms-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.symptom-tag {
+  background: #e8f4ff;
+  border-radius: 50rpx;
+  padding: 15rpx 30rpx;
+  font-size: 26rpx;
+  color: #2a8ce5;
+}
+
+/* 解释说明 */
+.explanation-box {
+  background: #f8fbff;
+  border-radius: 16rpx;
+  padding: 25rpx;
+  margin: 30rpx 0;
+}
+
+.explanation-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 15rpx;
+}
+
+.explanation-text {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* 用户信息 */
+.user-info {
+  background: #f0f8ff;
+  border-radius: 16rpx;
+  padding: 25rpx;
+}
+
+.info-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 15rpx;
+}
+
+.info-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.info-items text {
+  font-size: 26rpx;
+  color: #666;
+}
+
+/* 医院卡片 */
+.hospital-card {
+  background: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  border: 2rpx solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.hospital-card:active {
+  transform: scale(0.99);
+  border-color: #2a8ce5;
+}
+
+.hospital-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20rpx;
+}
+
+.hospital-name {
+  flex: 1;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-right: 20rpx;
+}
+
+.hospital-tags {
+  display: flex;
+  gap: 10rpx;
+}
+
+.hospital-tag {
+  padding: 8rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+
+.hospital-tag.level {
+  background: #e8f4ff;
+  color: #2a8ce5;
+}
+
+.hospital-tag.rating {
+  background: #fff4e6;
+  color: #ff9500;
+}
+
+.hospital-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.info-item {
+  font-size: 26rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.hospital-departments {
+  margin-bottom: 25rpx;
+}
+
+.dept-title {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 15rpx;
+}
+
+.dept-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.dept-tag {
+  background: #f0f0f0;
+  border-radius: 8rpx;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.dept-tag.recommended {
+  background: #e8f4ff;
+  color: #2a8ce5;
+  font-weight: 500;
+}
+
+.hospital-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.action-btn.call {
+  background: #f0f8ff;
+  color: #2a8ce5;
+  border: 2rpx solid #2a8ce5;
+}
+
+.action-btn.navigate {
+  background: #2a8ce5;
+  color: white;
+}
+
+.action-btn:active {
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+/* 建议列表 */
+.advice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25rpx;
+}
+
+.advice-item {
+  display: flex;
+  gap: 20rpx;
+}
+
+.advice-icon {
+  font-size: 32rpx;
+  width: 60rpx;
+  flex-shrink: 0;
+}
+
+.advice-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+.advice-text.emergency {
+  color: #ff3333;
+}
+
+/* 免责声明 */
+.disclaimer {
+  background: #fff4e6;
+  margin: 0 30rpx 30rpx;
+  border-radius: 16rpx;
+  padding: 25rpx;
+  border-left: 6rpx solid #ff9500;
+}
+
+.disclaimer-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #e65100;
+  margin-bottom: 10rpx;
+}
+
+.disclaimer-text {
+  display: block;
+  font-size: 24rpx;
+  color: #e65100;
+  line-height: 1.5;
+}
+
+/* 底部按钮 */
+.action-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 30rpx;
+  display: flex;
+  gap: 20rpx;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.restart-btn, .home-btn {
+  flex: 1;
+  border-radius: 50rpx;
+  padding: 28rpx 0;
+  font-size: 30rpx;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15rpx;
+  border: none;
+}
+
+.restart-btn {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.home-btn {
+  background: #2a8ce5;
+  color: white;
+}
+
+.restart-btn:active, .home-btn:active {
+  transform: scale(0.98);
+}

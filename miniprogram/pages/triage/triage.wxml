@@ -1,0 +1,201 @@
+<!--pages/triage/triage.wxml-->
+<view class="triage-page">
+  <!-- 顶部导航 -->
+  <view class="page-header">
+    <view class="back-btn" bindtap="backToHome">
+      <text>←</text>
+    </view>
+    <text class="page-title">智能分诊</text>
+    <view class="user-info-btn" bindtap="toggleUserInfo">
+      <text>👤</text>
+    </view>
+  </view>
+
+  <!-- 用户信息面板 -->
+  <view class="user-info-panel" wx:if="{{showUserInfo}}">
+    <view class="panel-content">
+      <view class="info-item">
+        <text class="info-label">年龄</text>
+        <input 
+          class="info-input" 
+          type="number" 
+          placeholder="请输入年龄"
+          value="{{age}}"
+          bindinput="onAgeChange"
+          maxlength="3"
+        />
+      </view>
+      
+      <view class="info-item">
+        <text class="info-label">性别</text>
+        <view class="gender-options">
+          <view 
+            class="gender-option {{gender === 'male' ? 'selected' : ''}}" 
+            bindtap="selectGender"
+            data-gender="male"
+          >
+            <text>👨 男性</text>
+          </view>
+          <view 
+            class="gender-option {{gender === 'female' ? 'selected' : ''}}" 
+            bindtap="selectGender"
+            data-gender="female"
+          >
+            <text>👩 女性</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 输入模式切换 -->
+  <view class="mode-switcher">
+    <view 
+      class="mode-tab {{inputMode === 'text' ? 'active' : ''}}" 
+      bindtap="switchMode"
+      data-mode="text"
+    >
+      <text class="mode-icon">📝</text>
+      <text class="mode-text">文本输入</text>
+    </view>
+    <view 
+      class="mode-tab {{inputMode === 'voice' ? 'active' : ''}}" 
+      bindtap="switchMode"
+      data-mode="voice"
+    >
+      <text class="mode-icon">🎤</text>
+      <text class="mode-text">语音输入</text>
+    </view>
+    <view 
+      class="mode-tab {{inputMode === 'body' ? 'active' : ''}}" 
+      bindtap="switchMode"
+      data-mode="body"
+    >
+      <text class="mode-icon">👤</text>
+      <text class="mode-text">人体图示</text>
+    </view>
+  </view>
+
+  <!-- 文本输入模式 -->
+  <view class="input-section" wx:if="{{inputMode === 'text'}}">
+    <view class="input-container">
+      <input 
+        class="symptom-input" 
+        placeholder="请输入症状，如：头痛、发热"
+        value="{{inputValue}}"
+        bindinput="onInputChange"
+        confirm-type="done"
+        bindconfirm="addSymptom"
+      />
+      <view class="input-btn" bindtap="addSymptom">
+        <text>添加</text>
+      </view>
+    </view>
+    
+    <!-- 常见症状 -->
+    <view class="common-section">
+      <text class="section-title">常见症状</text>
+      <view class="common-symptoms">
+        <block wx:for="{{commonSymptoms}}" wx:key="name">
+          <view 
+            class="common-symptom" 
+            bindtap="selectCommonSymptom"
+            data-symptom="{{item.name}}"
+          >
+            <text>{{item.name}}</text>
+            <text class="symptom-category">{{item.category}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- 语音输入模式 -->
+  <view class="voice-section" wx:if="{{inputMode === 'voice'}}">
+    <view class="voice-container">
+      <view 
+        class="voice-btn {{recording ? 'recording' : ''}}" 
+        bindtap="startVoiceInput"
+        wx:if="{{!recording}}"
+      >
+        <text class="voice-icon">🎤</text>
+        <text>点击开始说话</text>
+      </view>
+      
+      <view class="recording-view" wx:if="{{recording}}">
+        <view class="recording-animation">
+          <text class="pulse-dot">●</text>
+          <text class="pulse-dot">●</text>
+          <text class="pulse-dot">●</text>
+        </view>
+        <text class="recording-text">正在录音...</text>
+      </view>
+      
+      <view class="voice-result" wx:if="{{voiceResult}}">
+        <text class="result-label">识别结果：</text>
+        <text class="result-text">{{voiceResult}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 人体图示模式 -->
+  <view class="body-section" wx:if="{{inputMode === 'body'}}">
+    <view class="body-map">
+      <block wx:for="{{bodyParts}}" wx:key="id">
+        <view 
+          class="body-part {{item.selected ? 'selected' : ''}}" 
+          bindtap="selectBodyPart"
+          data-index="{{index}}"
+        >
+          <text class="body-icon">{{item.icon}}</text>
+          <text class="body-name">{{item.name}}</text>
+        </view>
+      </block>
+    </view>
+    <text class="body-tip">点击身体部位选择相关症状</text>
+  </view>
+
+  <!-- 症状列表 -->
+  <view class="symptoms-section" wx:if="{{symptoms.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">已添加的症状</text>
+      <view class="clear-btn" bindtap="clearSymptoms">
+        <text>清空</text>
+      </view>
+    </view>
+    
+    <view class="symptoms-list">
+      <block wx:for="{{symptoms}}" wx:key="*this">
+        <view class="symptom-item">
+          <text class="symptom-text">{{item}}</text>
+          <view 
+            class="remove-btn" 
+            bindtap="removeSymptom"
+            data-index="{{index}}"
+          >
+            <text>×</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 开始分诊按钮 -->
+  <view class="action-section">
+    <button 
+      class="diagnosis-btn {{symptoms.length === 0 ? 'disabled' : ''}}" 
+      bindtap="startDiagnosis"
+      disabled="{{symptoms.length === 0 || loading}}"
+    >
+      <text class="btn-icon">🏥</text>
+      <text class="btn-text">
+        {{loading ? '分析中...' : '开始智能分诊'}}
+      </text>
+      <text wx:if="{{symptoms.length > 0}}" class="symptom-count">
+        ({{symptoms.length}}个症状)
+      </text>
+    </button>
+    
+    <text class="tip-text">系统将根据症状推荐最合适的就诊科室</text>
+  </view>
+</view>
