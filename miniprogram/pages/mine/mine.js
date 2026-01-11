@@ -545,7 +545,7 @@ Page({
   // 反馈建议
   giveFeedback() {
     wx.navigateToMiniProgram({
-      appId: 'wx8abaf00ee8c3202e', // 示例
+      appId: 'wx1903fa52ed9fd6b2', // 示例
       path: 'pages/feedback/feedback',
       success: () => {
         console.log('跳转成功');

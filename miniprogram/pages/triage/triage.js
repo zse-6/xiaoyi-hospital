@@ -1,7 +1,6 @@
-// pages/triage/triage.js
 Page({
   data: {
-    // 当前输入模式：text-文本, voice-语音, body-人体图示
+    // 当前输入模式：text-文本, voice-语音, body-人体图示（开题报告多模态输入）
     inputMode: 'text',
     
     // 症状相关
@@ -12,7 +11,7 @@ Page({
     recording: false,
     voiceResult: '',
     
-    // 人体图示
+    // 人体图示（兼容旧版+组件版，开题报告扩展功能）
     bodyParts: [
       { id: 'head', name: '头部', icon: '👤', selected: false, symptoms: ['头痛', '头晕', '耳鸣'] },
       { id: 'chest', name: '胸部', icon: '🫀', selected: false, symptoms: ['胸痛', '胸闷', '心悸'] },
@@ -20,7 +19,7 @@ Page({
       { id: 'limbs', name: '四肢', icon: '🦵', selected: false, symptoms: ['关节痛', '肿胀', '麻木'] }
     ],
     
-    // 常见症状
+    // 常见症状（开题报告知识库核心数据）
     commonSymptoms: [
       { name: '头痛', category: '神经系统' },
       { name: '发热', category: '全身症状' },
@@ -38,13 +37,21 @@ Page({
     showUserInfo: false,
     
     // 加载状态
-    loading: false
+    loading: false,
+
+    // 人体图示组件相关
+    selectedBodyParts: [],
+    bodyMapSymptoms: [],
+    // 分诊结果临时存储
+    triageResult: null,
+    // 系统信息（替代废弃的wx.getSystemInfo）
+    systemInfo: {}
   },
 
   onLoad(options) {
     console.log('分诊页面加载', options);
     
-    // 处理快速入口
+    // 处理快速入口症状
     if (options.quickSymptom) {
       this.addSymptom(options.quickSymptom);
     }
@@ -54,11 +61,27 @@ Page({
       this.setData({ inputMode: options.mode });
     }
     
-    // 加载历史症状
+    // 加载历史症状记录
     this.loadHistory();
+    
+    // 初始化系统信息（开题报告技术路线：兼容新版API）
+    this.getSystemSetting();
   },
 
-  // 加载历史记录
+  // 修复：使用新版API获取系统信息（替代wx.getSystemInfo）
+  getSystemSetting() {
+    wx.getSystemSetting({
+      success: (res) => {
+        this.setData({ systemInfo: res });
+        console.log('系统信息:', res);
+      },
+      fail: (err) => {
+        console.warn('获取系统信息失败:', err);
+      }
+    });
+  },
+
+  // 加载历史分诊记录（开题报告个人健康档案功能）
   loadHistory() {
     const history = wx.getStorageSync('diagnosisHistory') || [];
     if (history.length > 0) {
@@ -76,12 +99,12 @@ Page({
     this.setData({ inputMode: mode });
   },
 
-  // 输入框变化
+  // 输入框内容变化
   onInputChange(e) {
     this.setData({ inputValue: e.detail.value });
   },
 
-  // 添加症状
+  // 添加症状（含重复校验、空值校验）
   addSymptom(symptom = null) {
     const symptomToAdd = symptom || this.data.inputValue.trim();
     
@@ -121,7 +144,7 @@ Page({
     this.addSymptom(symptom);
   },
 
-  // 删除症状
+  // 删除单个症状
   removeSymptom(e) {
     const index = e.currentTarget.dataset.index;
     const newSymptoms = [...this.data.symptoms];
@@ -129,35 +152,34 @@ Page({
     this.setData({ symptoms: newSymptoms });
   },
 
-  // 清除所有症状
+  // 清除所有症状（含确认弹窗）
   clearSymptoms() {
     wx.showModal({
       title: '提示',
       content: '确定要清除所有症状吗？',
       success: (res) => {
         if (res.confirm) {
-          this.setData({ symptoms: [] });
+          this.setData({ 
+            symptoms: [],
+            bodyMapSymptoms: [] // 同步清空人体图示选中症状
+          });
         }
       }
     });
   },
 
-  // 语音输入
+  // 语音输入（开题报告重点功能，模拟自然语言识别）
   startVoiceInput() {
     if (this.data.recording) return;
     
     this.setData({ recording: true });
     
-    // 模拟语音识别过程
+    // 模拟语音识别过程（实际可对接微信原生语音API）
     setTimeout(() => {
-      const mockResults = ['头痛发热', '腹痛腹泻', '咳嗽胸闷'];
+      const mockResults = ['头痛发热', '腹痛腹泻', '咳嗽胸闷', '心慌乏力', '关节肿痛'];
       const randomResult = mockResults[Math.floor(Math.random() * mockResults.length)];
       
-      wx.navigateTo({
-  url: `/pages/result/result?symptoms=${this.data.symptoms.join(',')}&age=${this.data.age}&gender=${this.data.gender}&route=triage&__route__=triage`
-});
-      
-      // 自动添加到症状列表
+      // 解析识别结果为单个症状
       const symptoms = randomResult.split(/(?=[\u4e00-\u9fa5])/).filter(s => s.length > 1);
       symptoms.forEach(symptom => {
         if (!this.data.symptoms.includes(symptom)) {
@@ -165,7 +187,11 @@ Page({
         }
       });
       
-      this.setData({ symptoms: this.data.symptoms });
+      this.setData({ 
+        symptoms: this.data.symptoms,
+        recording: false, // 修复：结束录音状态
+        voiceResult: randomResult
+      });
       
       wx.showToast({
         title: '语音识别完成',
@@ -174,10 +200,10 @@ Page({
     }, 2000);
   },
 
-  // 选择身体部位
+  // 旧版身体部位选择（兼容备用）
   selectBodyPart(e) {
     const index = e.currentTarget.dataset.index;
-    const bodyParts = this.data.bodyParts;
+    const bodyParts = [...this.data.bodyParts]; // 修复：避免直接修改原数组
     bodyParts[index].selected = !bodyParts[index].selected;
     
     this.setData({ bodyParts });
@@ -199,12 +225,62 @@ Page({
     }
   },
 
-  // 切换用户信息显示
+  // ========== 人体图示组件事件处理（开题报告扩展功能） ==========
+  // 1. 处理组件部位选择变化
+  onBodyMapChange(e) {
+    console.log('人体部位选择变化:', e.detail);
+    const { parts, selectedSymptomMap } = e.detail;
+    
+    // 提取并去重症状
+    const bodyMapSymptoms = Object.values(selectedSymptomMap).flat().filter((item, idx, arr) => arr.indexOf(item) === idx);
+    
+    this.setData({
+      selectedBodyParts: parts,
+      bodyMapSymptoms: bodyMapSymptoms
+    });
+    
+    // 自动将组件选择的症状添加到总列表
+    bodyMapSymptoms.forEach(symptom => {
+      this.addSymptom(symptom);
+    });
+  },
+
+  // 2. 处理组件症状选择事件
+  onBodyMapSymptomSelect(e) {
+    console.log('症状选择:', e.detail);
+    const { symptom } = e.detail;
+    this.addSymptom(symptom);
+  },
+
+  // 3. 删除人体图示选择的症状
+  removeBodyMapSymptom(e) {
+    const { index, symptom } = e.currentTarget.dataset;
+    // 从人体图示症状列表中删除
+    const newBodyMapSymptoms = [...this.data.bodyMapSymptoms];
+    newBodyMapSymptoms.splice(index, 1);
+    
+    // 从总症状列表中删除
+    const newSymptoms = this.data.symptoms.filter(item => item !== symptom);
+    
+    this.setData({
+      bodyMapSymptoms: newBodyMapSymptoms,
+      symptoms: newSymptoms
+    });
+    
+    wx.showToast({
+      title: '已删除',
+      icon: 'none',
+      duration: 1000
+    });
+  },
+
+  // ========== 用户信息相关 ==========
+  // 切换用户信息显示面板
   toggleUserInfo() {
     this.setData({ showUserInfo: !this.data.showUserInfo });
   },
 
-  // 年龄选择
+  // 年龄输入变化
   onAgeChange(e) {
     this.setData({ age: e.detail.value });
   },
@@ -215,10 +291,13 @@ Page({
     this.setData({ gender });
   },
 
-  // 开始分诊
+  // ========== 核心分诊流程（开题报告核心功能） ==========
+  // 开始分诊（含输入验证）
   startDiagnosis() {
-    // 验证输入
-    if (this.data.symptoms.length === 0) {
+    const { symptoms, age, gender } = this.data;
+    
+    // 验证症状非空
+    if (symptoms.length === 0) {
       wx.showToast({
         title: '请至少输入一个症状',
         icon: 'none'
@@ -226,8 +305,8 @@ Page({
       return;
     }
     
-    // 验证用户信息（年龄和性别可提高准确性）
-    if (!this.data.age || !this.data.gender) {
+    // 验证用户信息（可选，提升准确性）
+    if (!age || !gender) {
       wx.showModal({
         title: '提示',
         content: '填写年龄和性别可以提高分诊准确性，是否继续？',
@@ -244,25 +323,88 @@ Page({
     }
   },
 
-  // 执行分诊逻辑
+  // 执行分诊逻辑（调用云函数，含完整错误处理）
   performDiagnosis() {
     this.setData({ loading: true });
     
-    // 保存本次记录
+    // 保存本次记录到本地
     this.saveHistory();
     
-    // 模拟API调用延迟
-    setTimeout(() => {
-      this.setData({ loading: false });
-      
-      // 跳转到结果页面，传递症状数据
-      wx.navigateTo({
-        url: `/pages/result/result?symptoms=${this.data.symptoms.join(',')}&age=${this.data.age}&gender=${this.data.gender}`
-      });
-    }, 1500);
+    const { symptoms, age, gender } = this.data;
+
+    // 1. 调用症状标准化云函数（开题报告数据清洗要求）
+    wx.cloud.callFunction({
+      name: 'symptom_standard',
+      data: { symptoms },
+      success: (res1) => {
+        // 新增：完整错误兜底，避免undefined报错
+        if (!res1 || !res1.result || res1.result.code !== 200 || !res1.result.data) {
+          this.setData({ loading: false });
+          wx.showToast({ title: '症状标准化失败，请重试', icon: 'none' });
+          return;
+        }
+        
+        const standardSymptoms = res1.result.data.standardSymptoms || [];
+        if (standardSymptoms.length === 0) {
+          this.setData({ loading: false });
+          wx.showToast({ title: '未识别到有效症状', icon: 'none' });
+          return;
+        }
+
+        // 2. 调用核心分诊云函数（开题报告规则引擎+决策树）
+        wx.cloud.callFunction({
+          name: 'analyze_symptom',
+          data: { standardSymptoms, age, gender },
+          success: (res2) => {
+            this.setData({ loading: false });
+            
+            // 新增：分诊结果校验
+            if (!res2 || !res2.result || res2.result.code !== 200 || !res2.result.data) {
+              wx.showToast({ title: '分诊失败，请重试', icon: 'none' });
+              return;
+            }
+            
+            const triageResult = res2.result.data;
+            this.setData({ triageResult });
+
+            // 3. 保存分诊记录到云数据库
+            wx.cloud.callFunction({
+              name: 'record',
+              data: {
+                openid: wx.getStorageSync('openid') || `test_${Date.now()}`, // 匿名标识，符合隐私保护
+                symptoms: standardSymptoms,
+                age,
+                gender,
+                recommendedDept: triageResult.department,
+                warningLevel: triageResult.warningLevel || '无'
+              },
+              fail: (err) => {
+                console.error('云数据库记录保存失败:', err);
+                // 不阻断流程，仅日志提示
+              }
+            });
+
+            // 跳转到结果页（参数编码，避免特殊字符问题）
+            wx.navigateTo({
+              url: `/pages/result/result?symptoms=${encodeURIComponent(JSON.stringify(standardSymptoms))}&age=${encodeURIComponent(age)}&gender=${encodeURIComponent(gender)}&result=${encodeURIComponent(JSON.stringify(triageResult))}`
+            });
+          },
+          fail: (err) => {
+            this.setData({ loading: false });
+            console.error('分诊云函数调用失败:', err);
+            wx.showToast({ title: '网络异常，请检查网络', icon: 'none' });
+          }
+        });
+      },
+      fail: (err) => {
+        this.setData({ loading: false });
+        console.error('症状标准化云函数调用失败:', err);
+        wx.showToast({ title: '网络异常，请检查网络', icon: 'none' });
+      }
+    });
   },
 
-  // 保存历史记录
+  // 保存历史记录到本地缓存（开题报告历史记录功能）
   saveHistory() {
     const history = wx.getStorageSync('diagnosisHistory') || [];
     const newRecord = {
@@ -271,17 +413,26 @@ Page({
       age: this.data.age,
       gender: this.data.gender,
       timestamp: new Date().toLocaleString(),
-      result: null // 会在结果页面填充
+      result: this.data.triageResult || null
     };
     
+    // 插入到数组头部，保留最近10条
     history.unshift(newRecord);
-    wx.setStorageSync('diagnosisHistory', history.slice(0, 10)); // 只保存最近10条
+    wx.setStorageSync('diagnosisHistory', history.slice(0, 10));
   },
 
   // 返回首页
   backToHome() {
     wx.switchTab({
       url: '/pages/index/index'
+    });
+  },
+
+  // 页面卸载时重置状态
+  onUnload() {
+    this.setData({ 
+      recording: false,
+      loading: false
     });
   }
 });

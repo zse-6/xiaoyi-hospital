@@ -1,0 +1,239 @@
+/* 容器样式 */
+.body-map-container {
+  width: 100%;
+  padding: 20rpx;
+  box-sizing: border-box;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* 标题样式 */
+.body-map-header {
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1677ff;
+  display: block;
+  margin-bottom: 10rpx;
+}
+.subtitle {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+}
+
+/* 人体图示区域 */
+.body-map {
+  position: relative;
+  width: 100%;
+  height: 600rpx;
+  border: 1px solid #e5e5e5;
+  border-radius: 16rpx;
+  background-color: #f9f9f9;
+  margin-bottom: 30rpx;
+  overflow: hidden;
+}
+
+/* 人体部位样式 */
+.body-part {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(22, 119, 255, 0.1);
+  border: 2px solid #1677ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+.body-part.selected {
+  background-color: rgba(22, 119, 255, 0.3);
+  transform: scale(1.1);
+}
+.body-part-hover {
+  background-color: rgba(22, 119, 255, 0.2);
+}
+.body-part.disabled {
+  background-color: rgba(200, 200, 200, 0.1);
+  border-color: #ccc;
+  cursor: not-allowed;
+}
+
+.part-icon {
+  font-size: 32rpx;
+  margin-bottom: 5rpx;
+  color: #333;
+}
+.part-name {
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+}
+.body-part.disabled .part-name {
+  color: #999;
+}
+
+/* 人体轮廓 */
+.body-outline {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 400rpx;
+  color: #e5e5e5;
+  z-index: 1;
+}
+.outline-text {
+  display: block;
+}
+
+/* 部位描述 */
+.part-description {
+  margin-bottom: 30rpx;
+}
+.description-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 16rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+.desc-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+  margin-top: 4rpx;
+  color: #1677ff;
+}
+.desc-content {
+  flex: 1;
+}
+.desc-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+}
+.desc-text {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.5;
+  display: block;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20rpx;
+}
+.action-btn {
+  padding: 16rpx 40rpx;
+  background-color: #fff;
+  border: 1px solid #ff4d4f;
+  border-radius: 8rpx;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.action-btn-text {
+  font-size: 28rpx;
+  color: #ff4d4f;
+}
+.action-btn:active {
+  background-color: #fff2f0;
+}
+
+/* 症状弹窗 */
+.symptom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+.modal-overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  max-width: 600rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1px solid #e5e5e5;
+}
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+.modal-close {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.modal-close-text {
+  font-size: 40rpx;
+  color: #666;
+}
+.modal-subtitle {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 20rpx;
+}
+/* 修复：弹窗症状列表容器样式（原类名错误） */
+.symptoms-list {
+  max-height: 400rpx;
+  overflow-y: auto;
+  padding-right: 8rpx;
+}
+.symptom-item {
+  font-size: 32rpx;
+  padding: 16rpx 24rpx;
+  margin: 12rpx 0;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  transition: background 0.2s;
+  text-align: center;
+  cursor: pointer;
+}
+.symptom-item.selected {
+  background: #e6f4ff;
+  color: #1677ff;
+  font-weight: bold;
+}
+.symptom-item:active {
+  background: #d1eaff;
+}
+.symptom-item-text {
+  font-size: 32rpx;
+  color: #333;
+  display: block;
+}

@@ -1,0 +1,22 @@
+{
+  "component": true,
+  "usingComponents": {},
+  "properties": {
+    "value": {
+      "type": "Array",
+      "value": []
+    },
+    "multiple": {
+      "type": "Boolean",
+      "value": false
+    },
+    "disabled": {
+      "type": "Boolean",
+      "value": false
+    },
+    "showHeader": {
+      "type": "Boolean",
+      "value": true
+    }
+  }
+}

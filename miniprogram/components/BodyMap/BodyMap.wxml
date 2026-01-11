@@ -1,0 +1,90 @@
+<view class="body-map-container">
+  <!-- 标题（替换text标签为view，绑定类选择器） -->
+  <view class="body-map-header" wx:if="{{showHeader !== false}}">
+    <view class="title">人体图示</view>
+    <view class="subtitle">点击身体部位选择相关症状</view>
+  </view>
+  
+  <!-- 人体图示 -->
+  <view class="body-map">
+    <block wx:for="{{bodyParts}}" wx:key="id">
+      <view 
+        class="body-part {{selectedIds.includes(item.id) ? 'selected' : ''}}"
+        style="left: {{item.position.x}}%; top: {{item.position.y}}%; width: {{item.size}}rpx; height: {{item.size}}rpx;"
+        bindtap="onBodyPartTap"
+        data-id="{{item.id}}"
+        hover-class="body-part-hover"
+        hover-stay-time="100"
+        wx:if="{{!disabled}}"
+      >
+        <view class="part-icon">{{item.icon}}</view>
+        <view class="part-name">{{item.name}}</view> <!-- 替换text为view，绑定类选择器 -->
+      </view>
+      <!-- 禁用状态样式 -->
+      <view 
+        class="body-part disabled"
+        style="left: {{item.position.x}}%; top: {{item.position.y}}%; width: {{item.size}}rpx; height: {{item.size}}rpx;"
+        wx:else
+      >
+        <view class="part-icon">{{item.icon}}</view>
+        <view class="part-name">{{item.name}}</view> <!-- 替换text为view，绑定类选择器 -->
+      </view>
+    </block>
+    
+    <!-- 人体轮廓（背景） -->
+    <view class="body-outline">
+      <view class="outline-text">👤</view> <!-- 替换text为view，绑定类选择器 -->
+    </view>
+  </view>
+  
+  <!-- 部位描述 -->
+  <view class="part-description" wx:if="{{selectedParts.length > 0}}">
+    <block wx:for="{{selectedParts}}" wx:key="id">
+      <view class="description-item">
+        <view class="desc-icon">{{item.icon}}</view> <!-- 替换text为view，绑定类选择器 -->
+        <view class="desc-content">
+          <view class="desc-title">{{item.name}}</view> <!-- 替换text为view，绑定类选择器 -->
+          <view class="desc-text" style="white-space: pre-line;">{{item.displayDesc || item.description}}</view> <!-- 替换text为view，绑定类选择器 -->
+        </view>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 操作按钮（替换text标签为view，绑定类选择器） -->
+  <view class="action-buttons" wx:if="{{selectedParts.length > 0 && !disabled}}">
+    <view class="action-btn clear-btn" bindtap="clearSelection">
+      <view class="action-btn-text">🗑️ 清除选择</view>
+    </view>
+  </view>
+  
+  <!-- 症状选择弹窗 -->
+  <view class="symptom-modal" wx:if="{{showSymptomModal}}">
+    <view class="modal-overlay" bindtap="closeSymptomModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <view class="modal-title">选择症状</view> <!-- 替换text为view，绑定类选择器 -->
+        <view class="modal-close" bindtap="closeSymptomModal">
+          <view class="modal-close-text">×</view> <!-- 替换text为view，绑定类选择器 -->
+        </view>
+      </view>
+      
+      <view class="modal-body">
+        <view class="modal-subtitle"> <!-- 替换text为view，绑定类选择器 -->
+          请选择{{currentPartName}}的症状
+        </view>
+        
+        <view class="symptoms-list">
+          <block wx:for="{{currentSymptoms}}" wx:key="name">
+            <view 
+              class="symptom-item {{item.isSelected ? 'selected' : ''}}" 
+              bindtap="onSymptomSelect"
+              data-symptom="{{item.name}}"
+            >
+              <view class="symptom-item-text">{{item.name}}</view> <!-- 替换text为view，绑定类选择器 -->
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

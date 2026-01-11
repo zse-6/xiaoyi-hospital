@@ -1,5 +1,7 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "body-map": "/components/BodyMap/BodyMap"
+  },
   "navigationBarTitleText": "智能分诊",
   "enablePullDownRefresh": false,
   "backgroundColor": "#f8fbff"

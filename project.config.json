@@ -42,7 +42,7 @@
   },
   "appid": "wx1903fa52ed9fd6b2",
   "projectname": "晓医-智能导诊助手",
-  "libVersion": "2.20.1",
+  "libVersion": "3.11.3",
   "compileType": "miniprogram",
   "packOptions": {
     "ignore": [],

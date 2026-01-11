@@ -60,35 +60,45 @@ Page({
   },
 
   onLoad(options) {
-    console.log('结果页面参数:', options);
-    
-    // 安全处理参数
-    if (!options) {
-      options = {};
+  console.log('结果页面参数:', options);
+  
+  // 初始化症状数组
+  let symptoms = [];
+  
+  // 安全解析症状参数
+  if (options.symptoms && typeof options.symptoms === 'string') {
+    try {
+      // 解码 + 分割 + 过滤空值 + 去重
+      symptoms = decodeURIComponent(options.symptoms)
+        .split(',')
+        .filter(s => s.trim() !== '' && typeof s === 'string') // 过滤空字符串/空格
+        .filter((item, index, arr) => arr.indexOf(item) === index); // 去重
+    } catch (e) {
+      console.error('解析症状参数失败:', e);
+      symptoms = [];
     }
-    
-    // 设置两种路由参数
-    const __route__ = options.__route__ || options.route || 'default';
-    const route_ = options.route || 'default';
-    
-    // 解析传入的症状参数
-    const symptoms = options.symptoms ? options.symptoms.split(',') : [];
-    const age = options.age || '';
-    const gender = options.gender || '';
-    
-    console.log('设置数据:', { __route__, route_, symptoms, age, gender });
-    
-    this.setData({
-      __route__,  // 关键：必须设置这个
-      route_,     // 保持这个
-      symptoms,
-      age,
-      gender
-    });
-    
-    // 开始分诊分析
-    this.performDiagnosis();
-  },
+  }
+  
+  // 设置页面数据
+  this.setData({
+    symptoms: symptoms,
+    age: options.age || '',
+    gender: options.gender || '',
+    __route__: options.__route__ || 'default',
+    route_: options.route_ || 'default'
+  });
+  
+  console.log('设置数据:', {
+    symptoms: this.data.symptoms, // 此时应为 ["胸闷", "肌肉酸痛"]
+    age: this.data.age,
+    gender: this.data.gender,
+    __route__: this.data.__route__,
+    route_: this.data.route_
+  });
+  
+  // 执行症状分析逻辑
+  this.analyzeSymptoms();
+},
 
   // 执行分诊分析
   performDiagnosis() {

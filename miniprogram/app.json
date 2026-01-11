@@ -41,9 +41,7 @@
     ]
   },
   "permission": {
-    "scope.record": {
-      "desc": "需要您的语音授权进行语音输入"
-    },
+    
     "scope.userLocation": {
       "desc": "需要获取您的位置信息提供院内导航"
     }

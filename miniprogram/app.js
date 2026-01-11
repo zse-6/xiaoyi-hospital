@@ -1,27 +1,19 @@
-// app.js - 小程序入口文件
 App({
-  onLaunch: function () {
-    console.log('晓医小程序启动');
-    
-    // 初始化云开发（暂时注释，需要你的云环境ID）
-    // wx.cloud.init({
-    //   env: 'YOUR-CLOUD-ENV-ID', // 需要替换为你的云环境ID
-    //   traceUser: true
-    // });
-    
-    // 获取系统信息
-    wx.getSystemInfo({
-      success: res => {
-        this.globalData.systemInfo = res;
-        console.log('系统信息:', res);
-      }
-    });
+  onLaunch() {
+    // 初始化云开发环境
+    if (!wx.cloud) {
+      console.error('请使用 2.2.3 或以上的基础库以使用云能力');
+    } else {
+      wx.cloud.init({
+        env: 'cloud1-7g8bdxuy3b74f5b2', // 替换为你之前记下来的云环境ID（如cloud1-xxxxxxx）
+        traceUser: true, // 跟踪用户行为（匿名化，符合隐私保护）
+      });
+    }
+
+    this.globalData = {
+      userInfo: null,
+      cloudEnv: 'cloud1-7g8bdxuy3b74f5b2D' 
+    };
   },
-  
-  globalData: {
-    userInfo: null,
-    systemInfo: null,
-    diagnosisHistory: [],
-    currentHospital: null
-  }
+  globalData: {}
 });
