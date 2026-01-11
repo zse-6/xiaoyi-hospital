@@ -1,0 +1,19 @@
+<!-- miniprogram/pages/patient/qrcode.wxml 就诊码页面-->
+<view class="qrcode-container">
+  <view class="patient-info">
+    <view class="patient-name">{{patientInfo.name}}</view>
+    <view class="patient-id">身份证：{{patientInfo.idCard}}</view>
+    <view class="patient-no">门诊档案号：{{patientInfo.outpatientNo}}</view>
+  </view>
+  
+  <view class="qrcode-area">
+    <canvas canvas-id="qrcodeCanvas" class="qrcode-canvas"></canvas>
+    <text class="qrcode-hint">请向工作人员出示此就诊码</text>
+  </view>
+  
+  <view class="qrcode-tips">
+    <text>• 此就诊码有效期为24小时</text>
+    <text>• 可用于挂号、缴费、取药等环节</text>
+    <text>• 请妥善保管，防止泄露</text>
+  </view>
+</view>

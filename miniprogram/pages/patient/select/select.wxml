@@ -1,0 +1,51 @@
+<!-- miniprogram/pages/patient/select.wxml -->
+<view class="select-patient-container">
+  <view class="page-header">
+    <text class="title">就诊人选择</text>
+    <text class="subtitle">点击就诊人进行切换</text>
+  </view>
+
+  <scroll-view class="patient-list-scroll" scroll-y>
+    <view class="patient-list">
+      <view 
+        class="patient-item {{currentPatientId === item.id ? 'active' : ''}}"
+        wx:for="{{patientList}}"
+        wx:key="id"
+        bindtap="selectPatient"
+        data-id="{{item.id}}"
+      >
+        <view class="patient-header">
+          <text class="patient-name">{{item.name}}</text>
+          <text class="patient-relationship">{{item.relationship}}</text>
+          <view class="current-tag" wx:if="{{currentPatientId === item.id}}">当前</view>
+        </view>
+        
+        <view class="patient-info">
+          <view class="info-row">
+            <text class="info-label">身份证：</text>
+            <text class="info-value">{{formatIdCard(item.idCard)}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-label">门诊档案号：</text>
+            <text class="info-value">{{formatMedicalNo(item.outpatientNo)}}</text>
+          </view>
+        </view>
+        
+        <view class="patient-management" wx:if="{{item.relationship !== '本人'}}">
+          <text class="management-text">管理 管理员</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="add-patient-footer">
+    <view class="add-patient-btn" bindtap="gotoAddPatient">
+      <image src="/images/add-circle-icon.png" class="add-icon" />
+      <text>添加就诊人</text>
+    </view>
+    
+    <view class="management-tip" wx:if="{{patientList.length > 0}}">
+      <text class="tip-text">* 非本人就诊人由管理员管理</text>
+    </view>
+  </view>
+</view>

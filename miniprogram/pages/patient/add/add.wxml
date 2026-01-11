@@ -1,0 +1,77 @@
+<!-- miniprogram/pages/patient/add.wxml -->
+<view class="add-patient-container">
+  <view class="form-header">
+    <text class="title">添加就诊人</text>
+    <text class="notice">我院就医实行实名制，为保证顺利就医，请填写就诊人的真实信息，用户两个月只能删除一个就诊人</text>
+  </view>
+
+  <scroll-view class="form-scroll" scroll-y>
+    <form bindsubmit="submitForm" class="patient-form">
+      
+      <!-- 姓名 -->
+      <view class="form-item">
+        <view class="label">姓名</view>
+        <input 
+          name="name" 
+          value="{{formData.name}}" 
+          placeholder="请输入"
+          maxlength="20"
+          class="input"
+        />
+      </view>
+      
+      <!-- 证件类型 -->
+      <view class="form-item">
+        <view class="label">证件类型</view>
+        <picker 
+          name="idType" 
+          value="{{formData.idTypeIndex}}" 
+          range="{{idTypes}}"
+          bindchange="onIdTypeChange"
+          class="picker"
+        >
+          <view class="picker-view">
+            <text class="picker-text {{formData.idType ? '' : 'placeholder'}}">
+              {{formData.idType || '请选择'}}
+            </text>
+            <text class="picker-arrow">✓</text>
+          </view>
+        </picker>
+      </view>
+      
+      <!-- 证件号码 -->
+      <view class="form-item">
+        <view class="label">证件号</view>
+        <input 
+          name="idNumber" 
+          value="{{formData.idNumber}}" 
+          placeholder="请输入"
+          maxlength="18"
+          class="input"
+        />
+      </view>
+      
+      <!-- 协议 -->
+      <view class="agreement-section">
+        <checkbox-group bindchange="onAgreementChange">
+          <label class="agreement-item">
+            <checkbox value="agree" checked="{{formData.agree}}" color="#1296db" />
+            <text class="agreement-text">我同意{{hospitalName}}小程序收集我填写个人信息用于身份验证及相关服务。</text>
+          </label>
+        </checkbox-group>
+      </view>
+      
+      <!-- 提交按钮 -->
+      <view class="submit-section">
+        <button 
+          form-type="submit" 
+          class="submit-btn"
+          loading="{{isSubmitting}}"
+          disabled="{{isSubmitting || !formData.agree}}"
+        >
+          {{isSubmitting ? '提交中...' : '提交'}}
+        </button>
+      </view>
+    </form>
+  </scroll-view>
+</view>

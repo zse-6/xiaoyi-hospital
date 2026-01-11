@@ -1,90 +1,174 @@
-<!--pages/index/index.wxml-->
-<view class="page-container">
-  <!-- 顶部导航栏区域 -->
-  <view class="header-section">
-    <view class="app-info">
-      <text class="app-name">{{motto}}</text>
-      <text class="app-subtitle">{{subtitle}}</text>
+<!-- miniprogram/pages/index/index.wxml -->
+<view class="container">
+  <!-- 顶部标题栏 -->
+  <view class="header">
+    <view class="header-left">
+      <text class="app-name">晓医导诊分诊</text>
+      <view class="header-dots">
+        <view class="dot active"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+      </view>
     </view>
-    <image class="app-logo" src="/images/icons/logo.png" mode="aspectFit"></image>
+    <view class="header-right" wx:if="{{isLogin && userInfo}}" bindtap="gotoMine">
+      <image src="{{userInfo.avatar || '/images/default-avatar.png'}}" class="user-avatar" />
+    </view>
   </view>
 
-  <!-- 紧急提示 -->
-  <view class="emergency-notice" wx:if="{{emergencyNotice.show}}">
-    <view class="emergency-header">
-      <text class="emergency-icon">⚠️</text>
-      <text class="emergency-title">{{emergencyNotice.title}}</text>
-      <text class="close-btn" bindtap="closeEmergencyNotice">×</text>
-    </view>
-    <text class="emergency-content">{{emergencyNotice.content}}</text>
-  </view>
-
-  <!-- 快速开始区域 -->
-  <view class="quick-start-section">
-    <view class="section-header">
-      <text class="section-title">快速开始</text>
-      <text class="section-desc">选择常见症状快速分诊</text>
-    </view>
-    <view class="symptom-tags">
-      <block wx:for="{{quickSymptoms}}" wx:key="*this">
-        <view 
-          class="symptom-tag" 
-          bindtap="quickStart"
-          data-symptom="{{item}}"
-        >
-          <text>{{item}}</text>
-        </view>
+  <!-- 轮播图区域 -->
+  <view class="swiper-container" wx:if="{{banners.length > 0}}">
+    <swiper 
+      indicator-dots="{{true}}" 
+      autoplay="{{true}}" 
+      interval="3000" 
+      duration="500"
+      circular="{{true}}"
+      class="swiper"
+      bindchange="onSwiperChange"
+    >
+      <block wx:for="{{banners}}" wx:key="index">
+        <swiper-item>
+          <image 
+            src="{{item.image}}" 
+            mode="aspectFill" 
+            class="swiper-image"
+            binderror="onImageError"
+          />
+        </swiper-item>
       </block>
+    </swiper>
+    <!-- 轮播图指示点 -->
+    <view class="swiper-dots">
+      <view 
+        wx:for="{{banners}}" 
+        wx:key="index" 
+        class="swiper-dot {{currentSwiperIndex === index ? 'active' : ''}}"
+      ></view>
     </view>
   </view>
 
-  <!-- 功能模块区域 -->
-  <view class="features-section">
-    <view class="section-header">
-      <text class="section-title">核心功能</text>
-      <text class="section-desc">多种方式满足不同需求</text>
-    </view>
-    <view class="features-grid">
-      <block wx:for="{{features}}" wx:key="id">
-        <view 
-          class="feature-card" 
-          bindtap="featureTap"
-          data-id="{{item.id}}"
-          style="background-color: {{item.bgColor}};"
-        >
-          <view class="feature-icon" style="color: {{item.color}};">
-            {{item.icon}}
+  <!-- 就诊人信息卡片 -->
+  <view class="patient-card-section" bindtap="handlePatientSectionTap">
+    <view class="patient-card" wx:if="{{isLogin && currentPatient}}">
+      <view class="patient-main">
+        <view class="patient-name-section">
+          <text class="patient-name">{{currentPatient.name}}</text>
+          <text class="patient-relationship">({{currentPatient.relationship}})</text>
+        </view>
+        <view class="patient-actions">
+          <view class="action-item qrcode" bindtap="showPatientQRCode" catchtap>
+            <image src="/images/qrcode-small.png" class="action-icon" />
+            <text class="action-text">就诊码</text>
           </view>
-          <text class="feature-title">{{item.title}}</text>
-          <text class="feature-desc">{{item.desc}}</text>
+          <view class="action-divider"></view>
+          <view class="action-item switch" bindtap="switchPatient" catchtap>
+            <image src="/images/switch-small.png" class="action-icon" />
+            <text class="action-text">切换</text>
+          </view>
         </view>
-      </block>
-    </view>
-  </view>
-
-  <!-- 主要操作按钮 -->
-  <view class="action-section">
-    <button class="primary-btn" bindtap="startTriage">
-      <text class="btn-icon">🏥</text>
-      <text class="btn-text">开始智能分诊</text>
-    </button>
-    
-    <view class="secondary-actions">
-      <view class="secondary-btn" bindtap="viewHistory" wx:if="{{hasHistory}}">
-        <text class="btn-icon">📖</text>
-        <text class="btn-text">查看历史记录</text>
       </view>
       
-      <view class="secondary-btn" bindtap="featureTap" data-id="3">
-        <text class="btn-icon">📍</text>
-        <text class="btn-text">医院科室导航</text>
+      <!-- 问题提示 -->
+      <view class="question-section">
+        <view class="question-item" bindtap="gotoExistingDiagnosis">
+          <text class="question-text">在外院已有诊断？</text>
+          <text class="question-arrow">></text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 未登录/未添加就诊人状态 -->
+    <view class="add-patient-section" wx:else>
+      <view class="add-patient-content" wx:if="{{isLogin}}">
+        <image src="/images/add-patient-icon.png" class="add-icon" />
+        <text class="add-text">添加就诊人</text>
+      </view>
+      <view class="login-prompt" wx:else>
+        <text class="prompt-text">请先登录</text>
+        <text class="prompt-subtext">登录后可添加就诊人并使用全部功能</text>
       </view>
     </view>
   </view>
 
-  <!-- 底部信息 -->
-  <view class="footer-section">
-    <text class="footer-text">晓医 - 您的智能就医助手</text>
-    <text class="footer-subtext">基于医学知识图谱 · 数据安全加密</text>
+  <!-- 主要功能模块 -->
+  <view class="main-functions">
+    <!-- 预约挂号 -->
+    <view class="function-card appointment" bindtap="gotoAppointment">
+      <view class="function-content">
+        <text class="function-title">预约挂号</text>
+      </view>
+      <view class="function-arrow">></view>
+    </view>
+
+    <!-- 智能分诊 -->
+    <view class="function-card diagnosis" bindtap="gotoDiagnosis">
+      <view class="function-content">
+        <text class="function-title">不知道挂什么号？</text>
+        <text class="function-desc">智能分诊帮您推荐科室</text>
+      </view>
+      <view class="function-arrow">></view>
+    </view>
+
+    <!-- 在线问诊 -->
+    <view class="function-card consultation" bindtap="gotoConsultation">
+      <view class="function-content">
+        <text class="function-title">想线上咨询专家？</text>
+        <text class="function-desc">在线问诊，专家答疑</text>
+      </view>
+      <view class="function-arrow">></view>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-actions">
+    <view class="section-title">
+      <text class="title-text">快捷服务</text>
+      <text class="title-line"></text>
+    </view>
+    
+    <view class="actions-grid">
+      <view class="action-item" bindtap="gotoNavigation">
+        <image src="/images/navigation-icon.png" class="action-icon" />
+        <text class="action-text">院内导航</text>
+      </view>
+      <view class="action-item" bindtap="gotoProcess">
+        <image src="/images/process-icon.png" class="action-icon" />
+        <text class="action-text">就诊流程</text>
+      </view>
+      <view class="action-item" bindtap="gotoReports">
+        <image src="/images/report-icon.png" class="action-icon" />
+        <text class="action-text">报告查询</text>
+      </view>
+      <view class="action-item" bindtap="gotoPayment">
+        <image src="/images/payment-icon.png" class="action-icon" />
+        <text class="action-text">在线缴费</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+    class="tab-item {{currentTab === 1 ? 'active' : ''}}" 
+    bindtap="switchTab" 
+    data-tab="1"
+  >
+    <view class="tab-icon process"></view>
+    <text>全流程</text>
+  </view>
+  <view 
+    class="tab-item {{currentTab === 2 ? 'active' : ''}}" 
+    bindtap="switchTab" 
+    data-tab="2"
+  >
+    <view class="tab-icon guide"></view>
+    <text>导诊</text>
+  </view>
+  <view 
+    class="tab-item {{currentTab === 3 ? 'active' : ''}}" 
+    bindtap="gotoMine" 
+    data-tab="3"
+  >
+    <view class="tab-icon mine"></view>
+    <text>个人中心</text>
   </view>
 </view>

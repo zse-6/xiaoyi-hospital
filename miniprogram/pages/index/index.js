@@ -1,130 +1,212 @@
-// pages/index/index.js
+// miniprogram/pages/index/index.js
 Page({
   data: {
-    motto: '晓医智能导诊',
-    subtitle: '精准分诊 · 便捷就医',
-    features: [
-      {
-        id: 1,
-        icon: '🔊',
-        title: '语音分诊',
-        desc: '说话就能描述症状',
-        color: '#2a8ce5',
-        bgColor: '#e8f4ff'
-      },
-      {
-        id: 2,
-        icon: '👤',
-        title: '人体图示',
-        desc: '点选身体部位选择症状',
-        color: '#34c759',
-        bgColor: '#e8f8f0'
-      },
-      {
-        id: 3,
-        icon: '🧭',
-        title: '院内导航',
-        desc: '图文指引快速找到科室',
-        color: '#ff9500',
-        bgColor: '#fff4e6'
-      },
-      {
-        id: 4,
-        icon: '📋',
-        title: '就诊流程',
-        desc: '全流程陪伴式就医指导',
-        color: '#af52de',
-        bgColor: '#f5e8ff'
-      }
+    // 轮播图数据
+    banners: [
+      { image: '/images/banner/banner1.jpg' },
+      { image: '/images/banner/banner2.jpg' },
+      { image: '/images/banner/banner3.jpg' },
+      { image: '/images/banner/banner4.jpg' }
     ],
-    quickSymptoms: ['头痛', '发热', '咳嗽', '腹痛', '头晕', '恶心'],
-    emergencyNotice: {
-      show: true,
-      title: '紧急提示',
-      content: '如有胸痛、呼吸困难、大出血等紧急情况，请立即前往急诊科！'
-    }
+    currentSwiperIndex: 0,
+    
+    // 登录状态
+    isLogin: false,
+    userInfo: null,
+    
+    // 就诊人信息
+    patientList: [],
+    currentPatient: null,
+    currentPatientId: null,
+    
+    // 当前选中的标签页
+    currentTab: 0
   },
 
   onLoad() {
-    console.log('首页加载');
+    // 初始化轮播图
+    this.initBanners();
     this.checkLoginStatus();
   },
 
   onShow() {
-    // 每次显示页面时检查是否有历史记录
-    this.checkHistory();
+    this.checkLoginStatus();
+    if (this.data.isLogin) {
+      this.loadPatientList();
+    }
+  },
+
+  // 初始化轮播图
+  initBanners() {
+    // 检查图片是否存在，如果不存在使用占位图
+    const banners = this.data.banners.map(item => {
+      // 这里可以添加图片存在性检查
+      // 如果图片不存在，使用默认图片
+      return {
+        image: item.image || '/images/default-banner.jpg'
+      };
+    });
+    
+    this.setData({ banners });
+  },
+
+  // 轮播图切换事件
+  onSwiperChange(e) {
+    this.setData({
+      currentSwiperIndex: e.detail.current
+    });
+  },
+
+  // 图片加载失败
+  onImageError(e) {
+    console.error('图片加载失败:', e.detail.errMsg);
+    // 可以设置默认图片
+    const index = e.currentTarget.dataset.index;
+    const banners = this.data.banners;
+    banners[index].image = '/images/default-banner.jpg';
+    this.setData({ banners });
   },
 
   // 检查登录状态
   checkLoginStatus() {
     const token = wx.getStorageSync('token');
-    if (token) {
-      console.log('用户已登录');
-    } else {
-      console.log('用户未登录，使用游客模式');
+    const userInfo = wx.getStorageSync('userInfo');
+    const isLogin = !!token;
+    
+    this.setData({
+      isLogin,
+      userInfo: userInfo || null
+    });
+  },
+
+  // 加载就诊人列表
+  loadPatientList() {
+    const patientList = wx.getStorageSync('patientList') || [];
+    let currentPatientId = wx.getStorageSync('currentPatientId');
+    let currentPatient = null;
+    
+    if (patientList.length > 0) {
+      if (currentPatientId) {
+        currentPatient = patientList.find(p => p.id === currentPatientId) || patientList[0];
+      } else {
+        currentPatient = patientList[0];
+        currentPatientId = patientList[0].id;
+        wx.setStorageSync('currentPatientId', currentPatientId);
+      }
+    }
+    
+    this.setData({
+      patientList,
+      currentPatient,
+      currentPatientId
+    });
+  },
+
+  // 处理就诊人区域点击
+  handlePatientTap() {
+    if (!this.data.isLogin) {
+      this.gotoLogin();
+      return;
+    }
+    
+    if (!this.data.currentPatient) {
+      this.gotoAddPatient();
     }
   },
 
-  // 检查历史记录
-  checkHistory() {
-    const history = wx.getStorageSync('diagnosisHistory') || [];
-    if (history.length > 0) {
-      this.setData({
-        hasHistory: true,
-        latestHistory: history[0]
+  // 切换就诊人
+  switchPatient(e) {
+    e.stopPropagation();
+    if (!this.data.isLogin) {
+      this.gotoLogin();
+      return;
+    }
+    
+    wx.navigateTo({
+      url: '/pages/patient/select'
+    });
+  },
+
+  // 去登录
+  gotoLogin() {
+    wx.navigateTo({
+      url: '/pages/login/login'
+    });
+  },
+
+  // 去添加就诊人
+  gotoAddPatient() {
+    if (!this.data.isLogin) {
+      this.gotoLogin();
+      return;
+    }
+    
+    wx.navigateTo({
+      url: '/pages/patient/add'
+    });
+  },
+
+  // 分诊功能跳转
+  gotoVoiceDiagnosis() {
+    this.gotoWithLoginCheck('/pages/triage/triage?type=voice');
+  },
+
+  gotoBodyDiagnosis() {
+    this.gotoWithLoginCheck('/pages/triage/triage?type=body');
+  },
+
+  gotoTextDiagnosis() {
+    this.gotoWithLoginCheck('/pages/triage/triage?type=text');
+  },
+
+  gotoAppointment() {
+    this.gotoWithLoginCheck('/pages/appointment/index'); // 需要创建这个页面
+  },
+
+  // 通用跳转方法（检查登录）
+  gotoWithLoginCheck(url) {
+    if (!this.data.isLogin) {
+      this.gotoLogin();
+      return;
+    }
+    
+    if (url.includes('triage') && !this.data.currentPatient) {
+      wx.showModal({
+        title: '提示',
+        content: '请先添加就诊人',
+        success: (res) => {
+          if (res.confirm) {
+            this.gotoAddPatient();
+          }
+        }
+      });
+      return;
+    }
+    
+    wx.navigateTo({ url });
+  },
+
+  // 切换自定义底部标签页
+  switchTab(e) {
+    const tab = parseInt(e.currentTarget.dataset.tab);
+    this.setData({ currentTab: tab });
+    
+    const pages = [
+      '/pages/index/index',
+      '/pages/process/process',
+      '/pages/navigation/navigation',
+      '/pages/mine/mine'
+    ];
+    
+    if (tab !== 0) {
+      wx.redirectTo({
+        url: pages[tab]
       });
     }
   },
 
-  // 开始智能分诊
-  startTriage() {
-    wx.navigateTo({
-      url: '/pages/triage/triage'
-    });
-  },
-
-  // 快速症状选择
-  quickStart(e) {
-    const symptom = e.currentTarget.dataset.symptom;
-    wx.navigateTo({
-      url: `/pages/triage/triage?quickSymptom=${symptom}`
-    });
-  },
-
-  // 功能模块点击
-  featureTap(e) {
-    const id = e.currentTarget.dataset.id;
-    const urls = {
-      1: '/pages/triage/triage?mode=voice',  // 语音分诊
-      2: '/pages/triage/triage?mode=body',   // 人体图示
-      3: '/pages/navigation/navigation',     // 院内导航
-      4: '/pages/process/process'            // 就诊流程
-    };
-    
-    wx.navigateTo({
-      url: urls[id]
-    });
-  },
-
-  // 查看历史记录
-  viewHistory() {
-    wx.navigateTo({
-      url: '/pages/mine/mine'
-    });
-  },
-
-  // 关闭紧急提示
-  closeEmergencyNotice() {
-    this.setData({
-      'emergencyNotice.show': false
-    });
-  },
-
-  // 分享小程序
-  onShareAppMessage() {
-    return {
-      title: '晓医智能导诊 - 精准分诊，便捷就医',
-      path: '/pages/index/index'
-    };
+  // 去个人中心
+  gotoMine() {
+    this.gotoWithLoginCheck('/pages/mine/mine');
   }
 });

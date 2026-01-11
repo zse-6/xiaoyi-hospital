@@ -5,48 +5,55 @@
     "pages/navigation/navigation",
     "pages/process/process",
     "pages/mine/mine",
-    "pages/result/result"
+    "pages/result/result",
+    "pages/patient/add",
+    "pages/patient/select",
+    "pages/patient/qrcode",
+    "pages/login/login"
   ],
-  "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#2a8ce5",
-    "navigationBarTitleText": "晓医智能导诊",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#f5f5f5"
-  },
+  
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#2a8ce5",
+    "selectedColor": "#1296db",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
+    "position": "bottom",
     "list": [
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "images/icons/home.png",
-        "selectedIconPath": "images/icons/home-active.png"
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home-active.png"
       },
       {
-        "pagePath": "pages/triage/triage",
-        "text": "分诊",
-        "iconPath": "images/icons/diagnosis.png",
-        "selectedIconPath": "images/icons/diagnosis-active.png"
+        "pagePath": "pages/process/process",
+        "text": "全流程",
+        "iconPath": "images/tabbar/process.png",
+        "selectedIconPath": "images/tabbar/process-active.png"
+      },
+      {
+        "pagePath": "pages/navigation/navigation",
+        "text": "导诊",
+        "iconPath": "images/tabbar/guide.png",
+        "selectedIconPath": "images/tabbar/guide-active.png"
       },
       {
         "pagePath": "pages/mine/mine",
-        "text": "我的",
-        "iconPath": "images/icons/profile.png",
-        "selectedIconPath": "images/icons/profile-active.png"
+        "text": "个人中心",
+        "iconPath": "images/tabbar/mine.png",
+        "selectedIconPath": "images/tabbar/mine-active.png"
       }
     ]
   },
-  "permission": {
-    
-    "scope.userLocation": {
-      "desc": "需要获取您的位置信息提供院内导航"
-    }
+  
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1296db",
+    "navigationBarTitleText": "晓医导诊分诊",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f8f8f8"
   },
-  "requiredPrivateInfos": ["getLocation"],
+  
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }
