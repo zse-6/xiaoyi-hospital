@@ -1,21 +1,24 @@
 {
   "miniprogramRoot": "miniprogram/",
-  "cloudfunctionRoot": "cloudfunctions/",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": true,
     "enhance": true,
     "postcss": true,
+    "preloadBackgroundData": false,
     "minified": true,
-    "newFeature": true,
+    "newFeature": false,
     "coverView": true,
     "nodeModules": false,
     "autoAudits": false,
     "showShadowRootInWxmlPanel": true,
     "scopeDataCheck": false,
+    "uglifyFileName": false,
     "checkInvalidKey": true,
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
     "useApiHostProcess": true,
@@ -26,32 +29,16 @@
     },
     "enableEngineNative": false,
     "useIsolateContext": true,
+    "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
-    "minifyWXSS": true,
-    "minifyWXML": true,
-    "ignoreUploadUnusedFiles": true,
-    "compileWorklet": false,
-    "uglifyFileName": false,
     "packNpmRelationList": [],
-    "localPlugins": false,
+    "minifyWXSS": true,
     "disableUseStrict": false,
+    "showES6CompileOption": false,
     "useCompilerPlugins": false,
-    "condition": false,
-    "swc": false,
-    "disableSWC": true
+    "minifyWXML": true
   },
-  "appid": "wx1903fa52ed9fd6b2",
-  "projectname": "晓医-智能导诊助手",
-  "libVersion": "3.11.3",
-  "compileType": "miniprogram",
-  "packOptions": {
-    "ignore": [],
-    "include": []
-  },
-  "condition": {},
-  "editorSetting": {
-    "tabIndent": "insertSpaces",
-    "tabSize": 2
-  },
-  "simulatorPluginLibVersion": {}
+  "appid": "touristappid",
+  "projectname": "xiaoyi-hospital",
+  "condition": {}
 }
