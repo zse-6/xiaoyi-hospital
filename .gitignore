@@ -1,3 +1,40 @@
+﻿
+# ============================================
+# 瀹夊叏閰嶇疆 - 鍒囧嬁鎻愪氦浠ヤ笅鏂囦欢鍒癎itHub锛?
+# ============================================
+
+# 寰俊灏忕▼搴忔晱鎰熼厤缃?
+project.private.config.json
+project.config.json  # 濡傛灉鍖呭惈AppID锛屼篃蹇界暐
+
+# API瀵嗛挜鍜屽嚟鎹?
+*.secret.*
+*.key.*
+*.token.*
+app-secret.json
+config-secret.json
+
+# 鐜鍙橀噺
+*.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# 浜戝嚱鏁伴厤缃?
+cloudfunctions/*/config.json
+cloudfunctions/*/secret.*
+
+# 澶囦唤鏂囦欢
+*.backup
+*.backup-*
+backup/
+
+# 涓汉璁剧疆
+*.user.*
+*.personal.*
+
+# ============================================
 node_modules/ 
 *.log 
 .DS_Store 
@@ -5,3 +42,4 @@ cloudfunctions/*/node_modules/
 miniprogram/.tmp/ 
 miniprogram/.min/ 
 data-tools/raw-data/*.csv 
+
