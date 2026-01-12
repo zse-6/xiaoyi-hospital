@@ -145,30 +145,32 @@
       </view>
     </view>
   </view>
-</view>
 
-
-    class="tab-item {{currentTab === 1 ? 'active' : ''}}" 
-    bindtap="switchTab" 
-    data-tab="1"
-  >
-    <view class="tab-icon process"></view>
-    <text>全流程</text>
-  </view>
-  <view 
-    class="tab-item {{currentTab === 2 ? 'active' : ''}}" 
-    bindtap="switchTab" 
-    data-tab="2"
-  >
-    <view class="tab-icon guide"></view>
-    <text>导诊</text>
-  </view>
-  <view 
-    class="tab-item {{currentTab === 3 ? 'active' : ''}}" 
-    bindtap="gotoMine" 
-    data-tab="3"
-  >
-    <view class="tab-icon mine"></view>
-    <text>个人中心</text>
+  <!-- 底部Tab栏（修复核心：补充外层容器+完整标签） -->
+  <view class="tab-bar">
+    <view 
+      class="tab-item {{currentTab === 1 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="1"
+    >
+      <view class="tab-icon process"></view>
+      <text>全流程</text>
+    </view>
+    <view 
+      class="tab-item {{currentTab === 2 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="2"
+    >
+      <view class="tab-icon guide"></view>
+      <text>导诊</text>
+    </view>
+    <view 
+      class="tab-item {{currentTab === 3 ? 'active' : ''}}" 
+      bindtap="gotoMine" 
+      data-tab="3"
+    >
+      <view class="tab-icon mine"></view>
+      <text>个人中心</text>
+    </view>
   </view>
 </view>
